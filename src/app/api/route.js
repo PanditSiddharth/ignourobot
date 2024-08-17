@@ -79,47 +79,11 @@ bot.start((ctx) => {
     For example: /grade 123456789`);
 });
 
-bot.command("grade", async ctx => {
-    const enr = ctx.message.text.match(/\d+/);
-    // return console.log(enr)
-    if (!enr || enr[0].length < 9) {
-        await send(ctx, "Invalid enrollment number: \nWrite your enrollment number with command grade for example:\n/grade 123456789");
-        return;
-    }
-    const programs = [
-        "BCA", "BCAOL", "MCA", "MCAOL", "MP", "MPB", "PGDCA", "PGDCA_NEW",
-        "PGDHRM", "PGDFM", "PGDOM", "PGDMM", "PGDFMP", "MBF", "MCA_NEW",
-        "BAECH", "BAEGH", "BAG", "BAHDH", "BAHIH", "BAPAH", "BAPCH",
-        "BAPSH", "BASOH", "BAVTM", "BCOMG", "BCOMOL", "BSCANH",
-        "BSCBCH", "BSCG", "BSWG", "BSWGOL", "ASSO", "BA", "BCOM",
-        "BDP", "BSC"
-    ];
+const getFormattedGrade = async (enrollment, program) => {
+    let result = await fetchGradeCard(enrollment, program)
 
-    const replyMarkup = {
-        inline_keyboard: []
-    };
-
-    for (let i = 0; i < programs.length; i += 5) {
-        const row = programs.slice(i, i + 5).map(program => ({
-            text: program,
-            callback_data: `grade_${enr[0]}_${program}`
-        }));
-        replyMarkup.inline_keyboard.push(row);
-    }
-
-    await ctx.reply("Select Your program", { reply_markup: replyMarkup });
-})
-
-bot.on("callback_query", async (ctx, next) => {
-    const text = ctx.callbackQuery.data;
-    if (!text.includes("grade_"))
-        return next()
-
-    ctx.deleteMessage()
-    let pdata = text.split("_")
-    let result = await fetchGradeCard(pdata[1], pdata[2])
-
-
+    if(result.marks.length < 1)
+        return "Your selected program " + program + "'s I did'nt found grade card result"
     let gradeCard = `Your Grade Card: 
 
 \`\`\`js
@@ -142,6 +106,65 @@ gradeCard += "```"
 
     gradeCard += "\n\n>Your Approx Percentage\\: " + Math.round(percentage/div)
      gradeCard += "\n**>Subject \\= Sub\n**>Assignment Marks \\= Asm\n**>Exam Marks \\= Exm \n**>Percentage \\= Pcnt\n\n>⚠ Note\\: Here Percent calculation is approximation not exact\\. We Used 30% weightage on assignment marks and 70% on exam marks\\.\n>It can be vary depend on subjects\\.\n**>We did'nt included incomplete subjects\\."
+
+     return gradeCard;
+}
+
+bot.command("grade", async ctx => {
+    try {
+        
+    const text = ctx.message.text
+    const enr = text.match(/\d+/);
+    let program = ""
+    program = text.replace(/\/grade/i, "")?.replace(/\d+/, "")?.trim()?.toLocaleUpperCase()
+    console.log(program)
+    // return console.log(enr)
+    if (!enr || enr[0].length < 9) {
+        await send(ctx, "Invalid enrollment number: \nWrite your enrollment number with command grade for example:\n/grade 123456789");
+        return;
+    }
+
+    if(program){
+        let gradeCard = await getFormattedGrade(enr[0], program)
+        return ctx.reply(gradeCard, {parse_mode: "MarkdownV2"})
+        .catch(err=> console.log(err.message))
+    }
+
+    const programs = [
+        "BCA", "BCAOL", "MCA", "MCAOL", "MP", "MPB", "PGDCA", "PGDCA_NEW",
+        "PGDHRM", "PGDFM", "PGDOM", "PGDMM", "PGDFMP", "MBF", "MCA_NEW",
+        "BAECH", "BAEGH", "BAG", "BAHDH", "BAHIH", "BAPAH", "BAPCH",
+        "BAPSH", "BASOH", "BAVTM", "BCOMG", "BCOMOL", "BSCANH",
+        "BSCBCH", "BSCG", "BSWG", "BSWGOL", "ASSO", "BA", "BCOM",
+        "BDP", "BSC"
+    ];
+
+    const replyMarkup = {
+        inline_keyboard: []
+    };
+
+    for (let i = 0; i < programs.length; i += 5) {
+        const row = programs.slice(i, i + 5).map(program => ({
+            text: program,
+            callback_data: `grade_${enr[0]}_${program}`
+        }));
+        replyMarkup.inline_keyboard.push(row);
+    }
+
+    await ctx.reply("Select Your program", { reply_markup: replyMarkup });
+} catch (error) {
+        ctx.reply(error.message)
+}
+})
+
+bot.on("callback_query", async (ctx, next) => {
+    const text = ctx.callbackQuery.data;
+    if (!text.includes("grade_"))
+        return next()
+
+    ctx.deleteMessage()
+    let pdata = text.split("_")
+   let gradeCard = await getFormattedGrade(pdata[1], pdata[2])
     ctx.reply(gradeCard, {parse_mode: "MarkdownV2"})
     .catch(err=> console.log(err.message))
 })
@@ -157,7 +180,7 @@ bot.on("message", async (ctx, next) => {
             const enr = message.text.match(/\d+/);
             // return console.log(enr)
             if (!enr || enr[0].length < 9) {
-                await send(ctx, "Invalid enrollment number: \nAfter writing /isc write your enrollment number");
+                await send(ctx, "Invalid enrollment number: \nAfter writing /isc write your enrollment number ");
                 return;
             }
 

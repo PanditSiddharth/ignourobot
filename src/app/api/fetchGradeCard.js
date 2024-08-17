@@ -10,7 +10,11 @@ const cheerio = require('cheerio');
  * A promise that resolves to an object containing the student's name, enrollment number, and an array of results.
  */
 export async function fetchGradeCard(enrollmentNo, program) {
-    const url = `https://gradecard.ignou.ac.in/gradecard/view_gradecard.aspx?eno=${enrollmentNo}&prog=${program}&type=1`;
+let ab = 1
+    if(program == "BAG" || program == "BSCG")
+        ab = 4
+
+    const url = `https://gradecard.ignou.ac.in/gradecard/view_gradecard.aspx?eno=${enrollmentNo}&prog=${program}&type=${ab}`;
     const { data } = await axios.get(url);
 
     // Use Cheerio to parse HTML

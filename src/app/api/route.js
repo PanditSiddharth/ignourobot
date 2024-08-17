@@ -75,15 +75,15 @@ async function send(ctx, message, options = {}) {
 
 bot.start((ctx) => {
     const { first_name } = ctx.from;
-    ctx.reply(`Hello ${first_name}, enter /isc command with your roll no to get result. 
-    For example: /isc 123456789`);
+    ctx.reply(`Hello ${first_name}, enter /grade command with your roll no to get grade card. 
+    For example: /grade 123456789`);
 });
 
 bot.command("grade", async ctx => {
     const enr = ctx.message.text.match(/\d+/);
     // return console.log(enr)
     if (!enr || enr[0].length < 9) {
-        await send(ctx, "Invalid enrollment number: \nAfter writing /isc write your enrollment number");
+        await send(ctx, "Invalid enrollment number: \nWrite your enrollment number with command grade for example:\n/grade 123456789");
         return;
     }
     const programs = [

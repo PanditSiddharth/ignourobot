@@ -92,8 +92,8 @@ Asm  Exm  Pcnt  Sub   `
     let percentage = 0
     let div = 0
     for (let i = 0; i < res.length; i++) {
-        let examMarks = isNaN(res[i].examMarks) == true ? (isNaN(res[i].practicalMarks) ? "- " : res[i].practicalMarks) : res[i].examMarks;
-        let percentag = "\\- "
+        let examMarks = isNaN(res[i].examMarks) == true ? (isNaN(res[i].practicalMarks) ? "-  " : res[i].practicalMarks) : res[i].examMarks;
+        let percentag = "\\-  "
         if(!isNaN(examMarks) && !isNaN(res[i].assignmentMarks) ){
             percentag = examMarks * 7/10 + res[i].assignmentMarks * 3/10
             percentage += percentag

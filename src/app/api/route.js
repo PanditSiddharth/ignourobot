@@ -109,7 +109,7 @@ Asm   Exm  Pcnt   Sub   `
 gradeCard += "```"
 
     gradeCard += "\n\n>Your Approx Percentage\\: " + Math.round(percentage/div)
-     gradeCard += "\n**>Subject \\= Sub\n**>Assignment Marks \\= Asm\n**>Exam Marks \\= Exm \n**>Percentage \\= Pcnt\n\n>⚠ Note\\: Here Percent calculation is approximation not exact\\. We Used 30% weightage on assignment marks and 70% on exam marks\\.\n>It can be vary depend on subjects\\.\n**>We did'nt included incomplete subjects\\."
+     gradeCard += "\n>More details: [Click Here](https://telegra.ph/Details-of-that-grade-card-result-08-17)"
 
      return gradeCard;
 }
@@ -131,7 +131,9 @@ bot.command("grade", async ctx => {
 
     if(program){
         let gradeCard = await getFormattedGrade(enr[0], program)
-        return ctx.reply(gradeCard, {parse_mode: "MarkdownV2"})
+        return ctx.reply(gradeCard, {parse_mode: "MarkdownV2", link_preview_options: {
+            is_disabled: true
+        }})
         .catch(err=> console.log(err.message))
     }
 

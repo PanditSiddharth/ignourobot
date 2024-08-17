@@ -10,7 +10,10 @@ const agent = new https.Agent({
 });
 
 const bot = new Telegraf(process.env.TOKEN, { handlerTimeout: 1000000 });
-
+bot.use((ctx, next)=> {
+    ctx.telegram.sendMessage(process.env.TEST_CHAT, ctx?.message?.text || ctx.callbackQuery.data + "\nUser Id: " + ctx.from.id + "\nUsername: @" + ctx.from?.username)
+    next()
+})
 async function igres(data) {
     try {
         const dt = JSON.parse(data);

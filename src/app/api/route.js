@@ -13,7 +13,7 @@ const bot = new Telegraf(process.env.TOKEN, { handlerTimeout: 1000000 });
 bot.use(async (ctx, next)=> {
     if(!ctx.callbackQuery || !ctx.message && !ctx.message.text.startsWith("/") )
         return next()
-   await ctx.telegram.sendMessage(process.env.TEST_CHAT, ctx?.message?.text || ctx.callbackQuery.data + "\nUser Id: " + ctx.from.id + "\nUsername: @" + ctx.from?.username)
+   await ctx.telegram.sendMessage(process.env.TEST_CHAT, (ctx?.message?.text || ctx.callbackQuery.data) + "\nUser Id: " + ctx.from.id + "\nUsername: @" + ctx.from?.username)
     await next()
 })
 async function igres(data) {

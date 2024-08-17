@@ -145,6 +145,7 @@ console.log(program)
         status += `\n${pt[i].status.includes("Check Grade") ? '✅   ' : "☑    " }  ${formatDate(pt[i].date)}  ${pt[i].subject} `
     }
      status += pt.length > 0 ? "```" : "";
+     status += "\n\n>✅ \\= Done\\,    ☑ \\= In\\-Progress";
 
      await ctx.reply(status, { parse_mode: "MarkdownV2" });
 

@@ -84,6 +84,8 @@ For result:
 Write /isc command with your username
 Example:
 /isc 123456789
+
+More /help
 `);
 });
 
@@ -98,28 +100,32 @@ Example: /grade 123456789 BCA
 Result:
 /isc <enrollmentno>
 Example: /isc 123456789
+
+Assignment/practical status:
+/sts <enrollmentno> <program>
+/sts 123456789 BCA
         `)
 })
 
-bot.command("status", async (ctx, next) => {
+bot.command("sts", async (ctx, next) => {
     let text = ctx.message.text;
-    if (text.trim() == "/status")
+    if (text.trim() == "/sts")
         return ctx.reply("To check your assignment/practical status send this command\n" +
-            "/status <enrollmentno> <program>\n" +
-            "/status 123456789 BCA")
+            "/sts <enrollmentno> <program>\n" +
+            "/sts 123456789 BCA")
 
     const enr = text.match(/\d+/);
     ctx.deleteMessage().catch(console.log)
     let program = ""
-    program = text.replace(/\/status/i, "")?.replace(/\d+/, "")?.trim()?.toLocaleUpperCase()
-console.log(program)
+    program = text.replace(/\/sts/i, "")?.replace(/\d+/, "")?.trim()?.toLocaleUpperCase()
+
     if(!program){
         return send(ctx, "Plase enter your program name also")
     }
     if (!enr || enr[0].length < 9) {
         return await send(ctx, "Invalid enrollment number: \n" + "To check your assignment/practical status send this command\n" +
-            "/status <enrollmentno> <program>\n" +
-            "/status 123456789 BCA");
+            "/sts <enrollmentno> <program>\n" +
+            "/sts 123456789 BCA");
     }
 
     let res = await getStatusData(enr[0], program)

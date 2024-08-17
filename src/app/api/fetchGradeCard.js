@@ -32,15 +32,14 @@ export async function fetchGradeCard(enrollmentNo, program) {
     if (programs[0].includes(program)) {
         ab = 1
     }
-    if (programs[1].includes(program)) {
+    else if (programs[1].includes(program)) {
         ab = 2
-    }
-    if (programs[2].includes(program)) {
+    } else  if (programs[2].includes(program)) {
         ab = 4
     } else {
         ab = 3
     }
-
+console.log(enrollmentNo, program, ab)
     const url = `https://gradecard.ignou.ac.in/gradecard/view_gradecard.aspx?eno=${enrollmentNo}&prog=${program}&type=${ab}`;
     const { data } = await axios.get(url);
 

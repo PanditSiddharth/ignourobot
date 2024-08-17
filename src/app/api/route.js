@@ -95,7 +95,11 @@ Asm   Exm  Pcnt   Sub   `
         let examMarks = isNaN(res[i].examMarks) == true ? (isNaN(res[i].practicalMarks) ? "- " : res[i].practicalMarks) : res[i].examMarks;
         let percentag = "\\- "
         if(!isNaN(examMarks) && !isNaN(res[i].assignmentMarks) && examMarks >= 33){
+            if(program == "BCA"){
+            percentag = examMarks * 3/4 + res[i].assignmentMarks * 1/4
+            } else
             percentag = examMarks * 7/10 + res[i].assignmentMarks * 3/10
+
             percentage += percentag
             percentag = Math.round(percentag)
             div++

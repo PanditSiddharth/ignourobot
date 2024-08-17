@@ -140,7 +140,7 @@ bot.command("sts", async (ctx, next) => {
     let status = asm.length > 0 ? "Your Assignment status\\: \n```js\nStatus  Updtd On  Subject" : ""
 
     for (let i = 0; i < asm.length; i++) {
-        status += `\n${asm[i].status.includes("Check Grade") ? '✅   ' : "☑️    " }  ${formatDate(asm[i].date)}  ${asm[i].subject} `
+        status += `\n${asm[i].status.includes("Check Grade") ? '✅   ' : "☑️   " }  ${formatDate(asm[i].date)}  ${asm[i].subject} `
     }
      status += asm.length > 0 ? "```" : "";
 
@@ -148,7 +148,7 @@ bot.command("sts", async (ctx, next) => {
     status += pt.length > 0 ? "Your Practicals status\\: \n```js\nStatus  Updtd On  Subject" : ""
 
     for (let i = 0; i < pt.length; i++) {
-        status += `\n${pt[i].status.includes("Check Grade") ? '✅   ' : "☑️    " }  ${formatDate(pt[i].date)}  ${pt[i].subject} `
+        status += `\n${pt[i].status.includes("Check Grade") ? '✅   ' : "☑️   " }  ${formatDate(pt[i].date)}  ${pt[i].subject} `
     }
      status += pt.length > 0 ? "```" : "";
      status += "\n\n>✅ \\= Done\\,    ☑️ \\= In\\-Progress";

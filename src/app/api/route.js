@@ -75,9 +75,29 @@ async function send(ctx, message, options = {}) {
 
 bot.start((ctx) => {
     const { first_name } = ctx.from;
-    ctx.reply(`Hello ${first_name}, enter /grade command with your roll no to get grade card. 
-    For example: /grade 123456789`);
+    ctx.reply(`Hello ${first_name}, enter /grade command with your roll no and program to get grade card.
+For example: /grade 123456789 BCA
+
+For result:
+Write /isc command with your username
+Example:
+/isc 123456789
+`);
 });
+
+bot.help(ctx => {
+    ctx.reply(`
+Send these command for 
+
+Grade Card:
+/grade <enrollmentno> <programcode>
+Example: /grade 123456789 BCA
+
+Result:
+/isc <enrollmentno>
+Example: /isc 123456789
+        `)
+})
 
 const getFormattedGrade = async (enrollment, program) => {
     let result = await fetchGradeCard(enrollment, program)
@@ -121,6 +141,13 @@ bot.command("grade", async ctx => {
     const enr = text.match(/\d+/);
     ctx.deleteMessage().catch(console.log)
     let program = ""
+
+    if(text?.toLowerCase()?.trim() == "/grade"){
+        return ctx.reply(`Send like this formate: 
+/grade <enrollmentno> <programcode>
+/grade 123456789 BCA`)
+    }
+
     program = text.replace(/\/grade/i, "")?.replace(/\d+/, "")?.trim()?.toLocaleUpperCase()
     console.log(program)
     // return console.log(enr)

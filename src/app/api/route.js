@@ -87,20 +87,20 @@ const getFormattedGrade = async (enrollment, program) => {
     let gradeCard = `Your Grade Card: 
 
 \`\`\`js
-Asm  Exm  Pcnt  Sub   `
+Asm   Exm  Pcnt   Sub   `
     let res = result.marks;
     let percentage = 0
     let div = 0
     for (let i = 0; i < res.length; i++) {
-        let examMarks = isNaN(res[i].examMarks) == true ? (isNaN(res[i].practicalMarks) ? "-   " : res[i].practicalMarks) : res[i].examMarks;
-        let percentag = "\\-   "
+        let examMarks = isNaN(res[i].examMarks) == true ? (isNaN(res[i].practicalMarks) ? "- " : res[i].practicalMarks) : res[i].examMarks;
+        let percentag = "\\- "
         if(!isNaN(examMarks) && !isNaN(res[i].assignmentMarks) && examMarks >= 33){
             percentag = examMarks * 7/10 + res[i].assignmentMarks * 3/10
             percentage += percentag
             percentag = Math.round(percentag)
             div++
         }
-        gradeCard += `\n${res[i].assignmentMarks}    ${examMarks}    ${percentag}    ${res[i].subject}`
+        gradeCard += `\n${isNaN(res[i].assignmentMarks) == true ? "- " : res[i].assignmentMarks}    ${examMarks}    ${percentag}    ${res[i].subject}`
     }
 gradeCard += "```"
 

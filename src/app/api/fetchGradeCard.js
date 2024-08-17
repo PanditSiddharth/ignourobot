@@ -1,6 +1,24 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 
+const programs = [
+    [
+        "BCA", "BCAOL", "MCA", "MCAOL", "MP", "MPB",
+        "PGDCA", "PGDCA_NEW", "PGDHRM", "PGDFM", "PGDOM",
+        "PGDMM", "PGDFMP", "MBF", "MCA_NEW"
+    ],
+    [
+        "ASSO", "BA", "BCOM", "BDP", "BSC"
+    ],
+    [
+        "BAECH", "BAEGH", "BAG", "BAHDH", "BAHIH", "BAPAH", "BAPCH", "BAPSH",
+        "BASOH", "BAVTM", "BCOMG", "BCOMOL", "BSCANH", "BSCBCH", "BSCG",
+        "BSWG", "BSWGOL"
+    ],
+];
+
+
+
 /**
  * Retrieves student information and result based on the enrollment number and program.
  * 
@@ -10,9 +28,18 @@ const cheerio = require('cheerio');
  * A promise that resolves to an object containing the student's name, enrollment number, and an array of results.
  */
 export async function fetchGradeCard(enrollmentNo, program) {
-let ab = 1
-    if(program == "BAG" || program == "BSCG")
+    let ab = 1
+    if (programs[0].includes(program)) {
+        ab = 1
+    }
+    if (programs[1].includes(program)) {
+        ab = 2
+    }
+    if (programs[2].includes(program)) {
         ab = 4
+    } else {
+        ab = 3
+    }
 
     const url = `https://gradecard.ignou.ac.in/gradecard/view_gradecard.aspx?eno=${enrollmentNo}&prog=${program}&type=${ab}`;
     const { data } = await axios.get(url);
@@ -32,7 +59,7 @@ let ab = 1
     }
 
     let name = $("#ctl00_ContentPlaceHolder1_lblDispname").text()
-    
+
     return {
         name,
         enrollmentNo,

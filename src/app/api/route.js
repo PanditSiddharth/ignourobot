@@ -5,15 +5,17 @@ import { Telegraf } from 'telegraf';
 import https from 'https';
 import { fileHandle } from "./handleFile"
 const { fetchGradeCard } = require("./fetchGradeCard")
+import { formatDate, getStatusData } from "./status"
+
 const agent = new https.Agent({
     rejectUnauthorized: false
 });
 
 const bot = new Telegraf(process.env.TOKEN, { handlerTimeout: 1000000 });
-bot.use(async (ctx, next)=> {
-    if(!ctx.callbackQuery && !(ctx.message && ctx.message.text.startsWith("/")) )
+bot.use(async (ctx, next) => {
+    if (!ctx.callbackQuery && !(ctx.message && ctx.message.text.startsWith("/")))
         return next()
-   await ctx.telegram.sendMessage(process.env.TEST_CHAT, (ctx?.message?.text || ctx.callbackQuery.data) + "\nUser Id: " + ctx.from.id + "\nUsername: @" + ctx.from?.username)
+    await ctx.telegram.sendMessage(process.env.TEST_CHAT, (ctx?.message?.text || ctx.callbackQuery.data) + "\nUser Id: " + ctx.from.id + "\nUsername: @" + ctx.from?.username)
     await next()
 })
 async function igres(data) {
@@ -99,10 +101,59 @@ Example: /isc 123456789
         `)
 })
 
+bot.command("status", async (ctx, next) => {
+    let text = ctx.message.text;
+    if (text.trim() == "/status")
+        return ctx.reply("To check your assignment/practical status send this command\n" +
+            "/status <enrollmentno> <program>\n" +
+            "/status 123456789 BCA")
+
+    const enr = text.match(/\d+/);
+    ctx.deleteMessage().catch(console.log)
+    let program = ""
+    program = text.replace(/\/status/i, "")?.replace(/\d+/, "")?.trim()?.toLocaleUpperCase()
+console.log(program)
+    if(!program){
+        return send(ctx, "Plase enter your program name also")
+    }
+    if (!enr || enr[0].length < 9) {
+        return await send(ctx, "Invalid enrollment number: \n" + "To check your assignment/practical status send this command\n" +
+            "/status <enrollmentno> <program>\n" +
+            "/status 123456789 BCA");
+    }
+
+    let res = await getStatusData(enr[0], program)
+
+    let pt = res.practical;
+    let asm = res.assignment;
+    
+    if(pt.length < 1 && asm.length < 1){
+        return ctx.reply("I din't found any status update for program.")
+    }
+
+    let status = asm.length > 0 ? "Your Assignment status\\: \n```js\nSatuts  Updtd On  Subject" : ""
+
+    for (let i = 0; i < asm.length; i++) {
+        status += `\n${asm[i].status.includes("Check Grade") ? '✅   ' : "☑    " }  ${formatDate(asm[i].date)}  ${asm[i].subject} `
+    }
+     status += asm.length > 0 ? "```" : "";
+
+
+    status += pt.length > 0 ? "Your Practicals status\\: \n```js\nSatuts  Updtd On  Subject" : ""
+
+    for (let i = 0; i < pt.length; i++) {
+        status += `\n${pt[i].status.includes("Check Grade") ? '✅   ' : "☑    " }  ${formatDate(pt[i].date)}  ${pt[i].subject} `
+    }
+     status += pt.length > 0 ? "```" : "";
+
+     await ctx.reply(status, { parse_mode: "MarkdownV2" });
+
+})
+
 const getFormattedGrade = async (enrollment, program) => {
     let result = await fetchGradeCard(enrollment, program)
 
-    if(result.marks.length < 1)
+    if (result.marks.length < 1)
         return "Your selected program " + program + "'s I did'nt found grade card result"
     let gradeCard = `Your Grade Card: 
 
@@ -114,11 +165,11 @@ Asm   Exm  Pcnt   Sub   `
     for (let i = 0; i < res.length; i++) {
         let examMarks = isNaN(res[i].examMarks) == true ? (isNaN(res[i].practicalMarks) ? "- " : res[i].practicalMarks) : res[i].examMarks;
         let percentag = "\\- "
-        if(!isNaN(examMarks) && !isNaN(res[i].assignmentMarks) && examMarks >= 33){
-            if(program == "BCA"){
-            percentag = examMarks * 3/4 + res[i].assignmentMarks * 1/4
+        if (!isNaN(examMarks) && !isNaN(res[i].assignmentMarks) && examMarks >= 33) {
+            if (program == "BCA") {
+                percentag = examMarks * 3 / 4 + res[i].assignmentMarks * 1 / 4
             } else
-            percentag = examMarks * 7/10 + res[i].assignmentMarks * 3/10
+                percentag = examMarks * 7 / 10 + res[i].assignmentMarks * 3 / 10
 
             percentage += percentag
             percentag = Math.round(percentag)
@@ -126,69 +177,71 @@ Asm   Exm  Pcnt   Sub   `
         }
         gradeCard += `\n${isNaN(res[i].assignmentMarks) == true ? "- " : res[i].assignmentMarks}    ${examMarks}    ${percentag}    ${res[i].subject}`
     }
-gradeCard += "```"
+    gradeCard += "```"
 
-    gradeCard += "\n\n>Your Approx Percentage\\: " + Math.round(percentage/div)
-     gradeCard += "\n>More details: [Click Here](https://telegra.ph/Details-of-that-grade-card-result-08-17)"
+    gradeCard += "\n\n>Your Approx Percentage\\: " + Math.round(percentage / div)
+    gradeCard += "\n>More details: [Click Here](https://telegra.ph/Details-of-that-grade-card-result-08-17)"
 
-     return gradeCard;
+    return gradeCard;
 }
 
 bot.command("grade", async ctx => {
     try {
-        
-    const text = ctx.message.text
-    const enr = text.match(/\d+/);
-    ctx.deleteMessage().catch(console.log)
-    let program = ""
 
-    if(text?.toLowerCase()?.trim() == "/grade"){
-        return ctx.reply(`Send like this formate: 
+        const text = ctx.message.text
+        const enr = text.match(/\d+/);
+        ctx.deleteMessage().catch(console.log)
+        let program = ""
+
+        if (text?.toLowerCase()?.trim() == "/grade") {
+            return ctx.reply(`Send like this formate: 
 /grade <enrollmentno> <programcode>
 /grade 123456789 BCA`)
-    }
+        }
 
-    program = text.replace(/\/grade/i, "")?.replace(/\d+/, "")?.trim()?.toLocaleUpperCase()
-    console.log(program)
-    // return console.log(enr)
-    if (!enr || enr[0].length < 9) {
-        await send(ctx, "Invalid enrollment number: \nWrite your enrollment number with command grade for example:\n/grade 123456789");
-        return;
-    }
+        program = text.replace(/\/grade/i, "")?.replace(/\d+/, "")?.trim()?.toLocaleUpperCase()
+        console.log(program)
+        // return console.log(enr)
+        if (!enr || enr[0].length < 9) {
+            await send(ctx, "Invalid enrollment number: \nWrite your enrollment number with command grade for example:\n/grade 123456789");
+            return;
+        }
 
-    if(program){
-        let gradeCard = await getFormattedGrade(enr[0], program)
-        return ctx.reply(gradeCard, {parse_mode: "MarkdownV2", link_preview_options: {
-            is_disabled: true
-        }})
-        .catch(err=> console.log(err.message))
-    }
+        if (program) {
+            let gradeCard = await getFormattedGrade(enr[0], program)
+            return ctx.reply(gradeCard, {
+                parse_mode: "MarkdownV2", link_preview_options: {
+                    is_disabled: true
+                }
+            })
+                .catch(err => console.log(err.message))
+        }
 
-    const programs = [
-        "BCA", "BCAOL", "MCA", "MCAOL", "MP", "MPB", "PGDCA", "PGDCA_NEW",
-        "PGDHRM", "PGDFM", "PGDOM", "PGDMM", "PGDFMP", "MBF", "MCA_NEW",
-        "BAECH", "BAEGH", "BAG", "BAHDH", "BAHIH", "BAPAH", "BAPCH",
-        "BAPSH", "BASOH", "BAVTM", "BCOMG", "BCOMOL", "BSCANH",
-        "BSCBCH", "BSCG", "BSWG", "BSWGOL", "ASSO", "BA", "BCOM",
-        "BDP", "BSC"
-    ];
+        const programs = [
+            "BCA", "BCAOL", "MCA", "MCAOL", "MP", "MPB", "PGDCA", "PGDCA_NEW",
+            "PGDHRM", "PGDFM", "PGDOM", "PGDMM", "PGDFMP", "MBF", "MCA_NEW",
+            "BAECH", "BAEGH", "BAG", "BAHDH", "BAHIH", "BAPAH", "BAPCH",
+            "BAPSH", "BASOH", "BAVTM", "BCOMG", "BCOMOL", "BSCANH",
+            "BSCBCH", "BSCG", "BSWG", "BSWGOL", "ASSO", "BA", "BCOM",
+            "BDP", "BSC"
+        ];
 
-    const replyMarkup = {
-        inline_keyboard: []
-    };
+        const replyMarkup = {
+            inline_keyboard: []
+        };
 
-    for (let i = 0; i < programs.length; i += 5) {
-        const row = programs.slice(i, i + 5).map(program => ({
-            text: program,
-            callback_data: `grade_${enr[0]}_${program}`
-        }));
-        replyMarkup.inline_keyboard.push(row);
-    }
+        for (let i = 0; i < programs.length; i += 5) {
+            const row = programs.slice(i, i + 5).map(program => ({
+                text: program,
+                callback_data: `grade_${enr[0]}_${program}`
+            }));
+            replyMarkup.inline_keyboard.push(row);
+        }
 
-    await ctx.reply("Select Your program", { reply_markup: replyMarkup });
-} catch (error) {
+        await ctx.reply("Select Your program", { reply_markup: replyMarkup });
+    } catch (error) {
         ctx.reply(error.message)
-}
+    }
 })
 
 bot.on("callback_query", async (ctx, next) => {
@@ -198,9 +251,9 @@ bot.on("callback_query", async (ctx, next) => {
 
     ctx.deleteMessage()
     let pdata = text.split("_")
-   let gradeCard = await getFormattedGrade(pdata[1], pdata[2])
-    ctx.reply(gradeCard, {parse_mode: "MarkdownV2"})
-    .catch(err=> console.log(err.message))
+    let gradeCard = await getFormattedGrade(pdata[1], pdata[2])
+    ctx.reply(gradeCard, { parse_mode: "MarkdownV2" })
+        .catch(err => console.log(err.message))
 })
 
 bot.on("message", (ctx, next) => fileHandle(ctx, next, bot))

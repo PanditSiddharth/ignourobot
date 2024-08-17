@@ -115,6 +115,7 @@ bot.command("grade", async ctx => {
         
     const text = ctx.message.text
     const enr = text.match(/\d+/);
+    ctx.deleteMessage().catch(console.log)
     let program = ""
     program = text.replace(/\/grade/i, "")?.replace(/\d+/, "")?.trim()?.toLocaleUpperCase()
     console.log(program)

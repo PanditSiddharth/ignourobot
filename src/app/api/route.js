@@ -114,18 +114,32 @@ bot.on("callback_query", async (ctx, next) => {
     let pdata = text.split("_")
     let result = await fetchGradeCard(pdata[1], pdata[2])
 
+
     let gradeCard = `Your Grade Card: 
 
-Sub      Asm       Exm       pExm    `
+\`\`\`js
+Asm  Exm  Pcnt  Sub   `
     let res = result.marks;
+    let percentage = 0
+    let div = 0
     for (let i = 0; i < res.length; i++) {
-        gradeCard += `\n${res[i].subject}      ${res[i].assignmentMarks}       ${res[i].examMarks}       ${res[i].practicalMarks}`
+        let examMarks = isNaN(res[i].examMarks) == true ? (isNaN(res[i].practicalMarks) ? "- " : res[i].practicalMarks) : res[i].examMarks;
+        let percentag = "\\- "
+        if(!isNaN(examMarks) && !isNaN(res[i].assignmentMarks) ){
+            percentag = examMarks * 7/10 + res[i].assignmentMarks * 3/10
+            percentage += percentag
+            percentag = Math.round(percentag)
+            div++
+        }
+        gradeCard += `\n${res[i].assignmentMarks}   ${examMarks}   ${percentag}   ${res[i].subject}`
     }
+gradeCard += "```"
 
-    gradeCard += "\nSubject = Sub\nAssignment Marks = Asm\nExam Marks = Exm\nPractical Marks = pExm"
-    ctx.reply(gradeCard)
+    gradeCard += "\n\n>Your Approx Percentage\\: " + Math.round(percentage/div)
+     gradeCard += "\n**>Subject \\= Sub\n**>Assignment Marks \\= Asm\n**>Exam Marks \\= Exm \n**>Percentage \\= Pcnt\n\n>⚠ Note\\: Here Percent calculation is approximation not exact\\. We Used 30% weightage on assignment marks and 70% on exam marks\\.\n>It can be vary depend on subjects\\.\n**>We did'nt included incomplete subjects\\."
+    ctx.reply(gradeCard, {parse_mode: "MarkdownV2"})
+    .catch(err=> console.log(err.message))
 })
-
 
 bot.on("message", (ctx, next) => fileHandle(ctx, next, bot))
 

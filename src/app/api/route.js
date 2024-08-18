@@ -6,6 +6,7 @@ import https from 'https';
 import { fileHandle } from "./handleFile"
 const { fetchGradeCard } = require("./fetchGradeCard")
 import { formatDate, getStatusData } from "./status"
+import { getFormattedGrade } from "./helpers"
 
 const agent = new https.Agent({
     rejectUnauthorized: false
@@ -157,40 +158,7 @@ bot.command("sts", async (ctx, next) => {
 
 })
 
-const getFormattedGrade = async (enrollment, program) => {
-    let result = await fetchGradeCard(enrollment, program)
 
-    if (result.marks.length < 1)
-        return "Your selected program " + program + "'s I did'nt found grade card result"
-    let gradeCard = `Your Grade Card: 
-
-\`\`\`js
-Asm   Exm  Pcnt   Sub   `
-    let res = result.marks;
-    let percentage = 0
-    let div = 0
-    for (let i = 0; i < res.length; i++) {
-        let examMarks = isNaN(res[i].examMarks) == true ? (isNaN(res[i].practicalMarks) ? "- " : res[i].practicalMarks) : res[i].examMarks;
-        let percentag = "\\- "
-        if (!isNaN(examMarks) && !isNaN(res[i].assignmentMarks) && examMarks >= 33) {
-            if (program == "BCA") {
-                percentag = examMarks * 3 / 4 + res[i].assignmentMarks * 1 / 4
-            } else
-                percentag = examMarks * 7 / 10 + res[i].assignmentMarks * 3 / 10
-
-            percentage += percentag
-            percentag = Math.round(percentag)
-            div++
-        }
-        gradeCard += `\n${isNaN(res[i].assignmentMarks) == true ? "- " : res[i].assignmentMarks}    ${examMarks}    ${percentag}    ${res[i].subject}`
-    }
-    gradeCard += "```"
-
-    gradeCard += "\n\n>Your Approx Percentage\\: " + Math.round(percentage / div)
-    gradeCard += "\n>More details: [Click Here](https://telegra.ph/Details-of-that-grade-card-result-08-17)"
-
-    return gradeCard;
-}
 
 bot.command("grade", async ctx => {
     try {
@@ -251,8 +219,9 @@ bot.command("grade", async ctx => {
     }
 })
 
-bot.on("callback_query", async (ctx, next) => {
+bot.action(/grade.+/i,  async (ctx, next) => {
     const text = ctx.callbackQuery.data;
+    console.log("yes it's working")
     if (!text.includes("grade_"))
         return next()
 

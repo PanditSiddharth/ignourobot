@@ -6,7 +6,7 @@ import https from 'https';
 import { fileHandle } from "./handleFile"
 const { fetchGradeCard } = require("./fetchGradeCard")
 import { formatDate, getStatusData } from "./status"
-import { getFormattedGrade } from "./helpers"
+import { getFormattedGrade, getMarksCard } from "./helpers"
 
 const agent = new https.Agent({
     rejectUnauthorized: false
@@ -120,7 +120,7 @@ bot.command("sts", async (ctx, next) => {
     let program = ""
     program = text.replace(/\/sts/i, "")?.replace(/\d+/, "")?.trim()?.toLocaleUpperCase()
 
-    if(!program){
+    if (!program) {
         return send(ctx, "Plase enter your program name also")
     }
     if (!enr || enr[0].length < 9) {
@@ -133,32 +133,70 @@ bot.command("sts", async (ctx, next) => {
 
     let pt = res.practical;
     let asm = res.assignment;
-    
-    if(pt.length < 1 && asm.length < 1){
+
+    if (pt.length < 1 && asm.length < 1) {
         return ctx.reply("I din't found any status update for program.")
     }
 
     let status = asm.length > 0 ? "Your Assignment status\\: \n```js\nStatus  Updtd On  Subject" : ""
 
     for (let i = 0; i < asm.length; i++) {
-        status += `\n${asm[i].status.includes("Check Grade") ? '✅   ' : "☑️   " }  ${formatDate(asm[i].date)}  ${asm[i].subject} `
+        status += `\n${asm[i].status.includes("Check Grade") ? '✅   ' : "☑️   "}  ${formatDate(asm[i].date)}  ${asm[i].subject} `
     }
-     status += asm.length > 0 ? "```" : "";
+    status += asm.length > 0 ? "```" : "";
 
 
     status += pt.length > 0 ? "Your Practicals status\\: \n```js\nStatus  Updtd On  Subject" : ""
 
     for (let i = 0; i < pt.length; i++) {
-        status += `\n${pt[i].status.includes("Check Grade") ? '✅   ' : "☑️   " }  ${formatDate(pt[i].date)}  ${pt[i].subject} `
+        status += `\n${pt[i].status.includes("Check Grade") ? '✅   ' : "☑️   "}  ${formatDate(pt[i].date)}  ${pt[i].subject} `
     }
-     status += pt.length > 0 ? "```" : "";
-     status += "\n\n>✅ \\= Done\\,    ☑️ \\= In\\-Progress";
+    status += pt.length > 0 ? "```" : "";
+    status += "\n\n>✅ \\= Done\\,    ☑️ \\= In\\-Progress";
 
-     await ctx.reply(status, { parse_mode: "MarkdownV2" });
+    await ctx.reply(status, { parse_mode: "MarkdownV2" });
 
 })
 
+bot.command("marks", async ctx => {
+    try {
+        const text = ctx.message.text
+        const enr = text.match(/\d+/);
+        ctx.deleteMessage().catch(console.log)
+        let program = ""
 
+        if (text?.toLowerCase()?.trim() == "/marks") {
+            return ctx.reply(`Send like this formate: 
+/marks <enrollmentno> <programcode>
+/marks 123456789 BCA`)
+        }
+
+
+        program = text.replace(/\/marks/i, "")?.replace(/\d+/, "")?.trim()?.toLocaleUpperCase()
+        // return console.log(enr)
+        if (!enr || enr[0].length < 9) {
+            await send(ctx, "Invalid enrollment number: \nWrite your enrollment number with command marks for example:\n/marks 123456789 bca");
+            return;
+        }
+
+        program = program == 'MCA' ? "MCA_NEW" : program
+        if(!['BCA', 'MCA_NEW', "MCA", "MCAOL"].includes(program)){
+            return ctx.reply("This feature is only for BCA MCA students it will slowly slowly available for all.")
+        }
+
+        let gradeCard = await getMarksCard(enr[0], program)
+        console.log(gradeCard)
+        return ctx.reply(gradeCard.replace(/\s\-\s/, '\\-'), {
+            parse_mode: "MarkdownV2", link_preview_options: {
+                is_disabled: true
+            }
+        })
+            .catch(err => console.log(err.message))
+
+    } catch (error) {
+        ctx.reply(error.message)
+    }
+})
 
 bot.command("grade", async ctx => {
     try {
@@ -219,7 +257,7 @@ bot.command("grade", async ctx => {
     }
 })
 
-bot.action(/grade.+/i,  async (ctx, next) => {
+bot.action(/grade.+/i, async (ctx, next) => {
     const text = ctx.callbackQuery.data;
     console.log("yes it's working")
     if (!text.includes("grade_"))

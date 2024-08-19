@@ -24,7 +24,7 @@ const programs = [
  * 
  * @param {number | string} enrollmentNo - The enrollment number of the student.
  * @param {string} program - The program name the student is enrolled in.
- * @returns {Promise<{name: string, enrollmentNo: number, marks: {subject: string, assignmentMarks: string, examMarks: string, practicalMarks: string}[]}>} 
+ * @returns {Promise<{name: string, enrollmentNo: number, marks: {subject: string, assignmentMarks: string, examMarks: string, practicalMarks: string, labMarks: string}[]}>} 
  * A promise that resolves to an object containing the student's name, enrollment number, and an array of results.
  */
 export async function fetchGradeCard(enrollmentNo, program) {
@@ -52,6 +52,7 @@ console.log(enrollmentNo, program, ab)
         resdata.push({
             subject: $(rowData[0]).text(),
             assignmentMarks: $(rowData[1]).text(),
+            labMarks: $(rowData[2]).text(),
             examMarks: $(rowData[6]).text(),
             practicalMarks: $(rowData[7]).text()
         })

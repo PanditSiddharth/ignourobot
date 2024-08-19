@@ -180,12 +180,12 @@ bot.command("marks", async ctx => {
         }
 
         program = program == 'MCA' ? "MCA_NEW" : program
-        if(!['BCA', 'MCA_NEW', "MCA", "MCAOL"].includes(program)){
+        if(!['BCA', 'MCA_NEW', "MCA", "MCAOL", 'BCAOL'].includes(program)){
             return ctx.reply("This feature is only for BCA MCA students it will slowly slowly available for all.")
         }
 
         let gradeCard = await getMarksCard(enr[0], program)
-        console.log(gradeCard)
+      
         return ctx.reply(gradeCard.replace(/\s\-\s/, '\\-'), {
             parse_mode: "MarkdownV2", link_preview_options: {
                 is_disabled: true

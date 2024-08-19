@@ -144,7 +144,7 @@ function calcPercent(am, lm, em, sub, prog) {
         if (!isNaN(v)) {
             if (v > 39)
                 return true;
-            else if (["BCA", "MCA", "BCA_NEW", "MCA_NEW", 'MCAOL'].includes(prog)) {
+            else if (["BCA", "MCA", "BCA_NEW", "MCA_NEW", 'MCAOL', 'BCAOL'].includes(prog)) {
                 if (v < 40)
                     return false
                 else
@@ -194,7 +194,7 @@ Asm   Exm  lbm   Pcnt        Sub   `
         let sub = res[i].subject;
         let pcnt = calcPercent(am, lm, em == "-" ? pm : em, sub, program);
         pctg.got = +pctg.got + +pcnt.got;
-        console.log(pcnt.in)
+        // console.log(pcnt.in)
         pctg.in = pctg.in + +pcnt.in;
 
         gradeCard += `\n${getfm(am)}    ${getfem(em, pm)}    ${getfm(lm)}   ${(pcnt.got == 0 ? "0 " : Math.round(pcnt.got)) + " in " + pcnt.in}   ${sub}`

@@ -139,7 +139,17 @@ Asm   Exm  Pcnt   Sub   `
  */
 function calcPercent(am, lm, em, sub, prog) {
     let res = { got: "0 ", in: " 0 " }
+    if (!courses[sub])
+        return res
+    let subb = courses[sub]
 
+    if(prog.endsWith("P") && subb.mm >100){
+        if(lm == "-")
+            return {got: em, in: subb.mm}
+        else {
+            return {got: lm + em, in: subb.mm }
+        }
+    }
     if ([am, em].every(v => {
         if (!isNaN(v)) {
             if (v > 39)
@@ -156,10 +166,6 @@ function calcPercent(am, lm, em, sub, prog) {
         } else
             return false
     })) {
-        if (!courses[sub])
-            return res
-        let subb = courses[sub]
-
         if (lm == "-")
             res.got = Math.round(am * subb.aw / 100) + Math.round(em * (100 - +subb.aw) / 100)
         else {

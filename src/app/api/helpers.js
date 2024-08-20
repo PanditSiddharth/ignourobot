@@ -66,7 +66,7 @@ let courses = {
     MCSL229: { mm: 50, aw: 30 },
     MCS230: { mm: 100, aw: 30 },
     MCS231: { mm: 100, aw: 30 },
-    MCSP232: { mm: 200, aw: 30 }
+    MCSP232: { mm: 200, aw: 25 }
 };
 
 export function getfm(am) {
@@ -143,13 +143,20 @@ function calcPercent(am, lm, em, sub, prog) {
         return res
     let subb = courses[sub]
 console.log(sub.replace(/\d+/, "")?.trim()?.endsWith("P"), sub)
-    if(sub.replace(/\d+/, "")?.trim()?.endsWith("P") && subb.mm >100){
+    if(sub?.trim() == "MCSP232"){
+        console.log("yes it's run")
+        am = lm;
+        lm = "-"
+        console.log(am, lm)
+    }
+    else if(sub.replace(/\d+/, "")?.trim()?.endsWith("P") && subb.mm >100){
         if(lm == "-")
             return {got: +em, in: +subb.mm}
         else {
             return {got: +lm + +em, in: +subb.mm }
         }
     }
+
     if ([am, em].every(v => {
         if (!isNaN(v)) {
             if (v > 39)
@@ -167,13 +174,13 @@ console.log(sub.replace(/\d+/, "")?.trim()?.endsWith("P"), sub)
             return false
     })) {
         if (lm == "-")
-            res.got = Math.round(am * subb.aw / 100) + Math.round(em * (100 - +subb.aw) / 100)
+            res.got = Math.round(am * subb.aw / 100 * (subb.mm/100)) + Math.round(em * ((100 - +subb.aw) / 100) * (subb.mm/100))
         else {
-            res.got = Math.round(am * +subb.aw / 100) +
-                Math.round((+em + +lm) / 2 * (100 - +subb.aw) / 100)
+            res.got = Math.round(am * +subb.aw / 100 * (subb.mm/100)) +
+                Math.round((+em + +lm) / 2 * (100 - +subb.aw) / 100 * (subb.mm/100))
         }
 
-        res.got = Math.round(res.got * subb.mm / 100)
+        // res.got = Math.round(res.got * subb.mm / 100)
         res.in = subb.mm == 50 ? "50 " : subb.mm;
         return res
     } else {

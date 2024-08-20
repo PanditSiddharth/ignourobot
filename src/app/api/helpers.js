@@ -161,11 +161,13 @@ function calcPercent(am, lm, em, sub, prog) {
         let subb = courses[sub]
 
         if (lm == "-")
-            res.got = am * subb.aw / 100 + em * (100 - +subb.aw) / 100
-        else
-            res.got = am * +subb.aw / 100 + (+em + +lm) / 2 * (100 - +subb.aw) / 100
+            res.got = Math.round(am * subb.aw / 100) + Math.round(em * (100 - +subb.aw) / 100)
+        else {
+            res.got = Math.round(am * +subb.aw / 100) +
+                Math.round((+em + +lm) / 2 * (100 - +subb.aw) / 100)
+        }
 
-        res.got = res.got * subb.mm / 100
+        res.got = Math.round(res.got * subb.mm / 100)
         res.in = subb.mm == 50 ? "50 " : subb.mm;
         return res
     } else {
@@ -183,7 +185,7 @@ export const getMarksCard = async (enrollment, program) => {
 \`\`\`js
 Asm   Exm  lbm   Pcnt        Sub   `
     let res = result.marks;
-    let pctg = { got: 0 , in: 0 }
+    let pctg = { got: 0, in: 0 }
     let div = 0
 
     for (let i = 0; i < res.length; i++) {
@@ -200,8 +202,8 @@ Asm   Exm  lbm   Pcnt        Sub   `
         gradeCard += `\n${getfm(am)}    ${getfem(em, pm)}    ${getfm(lm)}   ${(pcnt.got == 0 ? "0 " : Math.round(pcnt.got)) + " in " + pcnt.in}   ${sub}`
     }
     gradeCard += "```"
-console.log(pctg)
-    gradeCard += "\n\n>Your Percentage\\: " + Math.round(+pctg.got/ +pctg.in  * 100) + " %"
+    console.log(pctg)
+    gradeCard += "\n\n>Your Percentage\\: " + Math.round(+pctg.got / +pctg.in * 100) + " %"
     gradeCard += "\n>More details: [Click Here](https://telegra.ph/Details-of-that-grade-card-result-08-17)"
 
     return gradeCard;

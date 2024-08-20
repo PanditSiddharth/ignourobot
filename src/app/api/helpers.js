@@ -209,7 +209,8 @@ Asm   Exm  lbm   Pcnt        Sub   `
     }
     gradeCard += "```"
     console.log(pctg)
-    gradeCard += "\n\n>Your Percentage\\: " + Math.round(+pctg.got / +pctg.in * 100) + " %"
+    gradeCard += "\n\n>Result\\: " + "Got " + pctg.got + " in " + pctg.in
+    gradeCard += "\n>Your Percentage\\: " + Math.round(+pctg.got / +pctg.in * 100) + " %"
     gradeCard += "\n>More details: [Click Here](https://telegra.ph/Details-of-that-grade-card-result-08-17)"
 
     return gradeCard;

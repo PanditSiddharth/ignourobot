@@ -143,7 +143,7 @@ function calcPercent(am, lm, em, sub, prog) {
         return res
     let subb = courses[sub]
 
-    if(prog.replace(/\d*/, "")?.endsWith("P") && subb.mm >100){
+    if(sub.replace(/\d*/, "")?.endsWith("P") && subb.mm >100){
         if(lm == "-")
             return {got: em, in: subb.mm}
         else {

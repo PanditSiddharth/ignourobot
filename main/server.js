@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.post('/bot', async (req, res) => {
+app.post('/api/bot', async (req, res) => {
     try {
         await bot.handleUpdate(req.body);
         res.json({ success: true });

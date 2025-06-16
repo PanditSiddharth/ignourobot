@@ -1,5 +1,5 @@
-import { fetchGradeCard } from "./fetchGradeCard"
-
+const fetchGradeCard = require("../api/fetchGradeCard");
+const { getStatusData, formatDate } = require("../api/status");
 
 let courses = {
     // BCA
@@ -69,7 +69,7 @@ let courses = {
     MCSP232: { mm: 200, aw: 25 }
 };
 
-export function getfm(am) {
+function getfm(am) {
     if (['A', 'B', 'C', 'D', 'E', 'F'].includes(am))
         return am + " "
     else if (isNaN(am) == true)
@@ -77,7 +77,7 @@ export function getfm(am) {
     else return am
 }
 
-export function getfem(em, pm) {
+function getfem(em, pm) {
     let am = em == "-" ? pm : em;
     if (['A', 'B', 'C', 'D', 'E', 'F'].includes(am))
         return am + " "
@@ -86,7 +86,7 @@ export function getfem(em, pm) {
     else return am
 }
 
-export const getFormattedGrade = async (enrollment, program) => {
+const getFormattedGrade = async (enrollment, program) => {
     let result = await fetchGradeCard(enrollment, program)
 
     if (result.marks.length < 1)
@@ -188,7 +188,7 @@ console.log(sub.replace(/\d+/, "")?.trim()?.endsWith("P"), sub)
     }
 }
 
-export const getMarksCard = async (enrollment, program) => {
+const getMarksCard = async (enrollment, program) => {
     let result = await fetchGradeCard(enrollment, program)
 
     if (result.marks.length < 1)
@@ -222,3 +222,91 @@ Asm   Exm  lbm   Pcnt        Sub   `
 
     return gradeCard;
 }
+
+const statusHandler = async (ctx, next) => {
+    let text = ctx.message.text;
+    if (text.trim() == "/sts")
+        return ctx.reply("To check your assignment/practical status send this command\n" +
+            "/sts <enrollmentno> <program>\n" +
+            "/sts 123456789 BCA")
+
+    const enr = text.match(/\d+/);
+    ctx.deleteMessage().catch(console.log)
+    let program = ""
+    program = text.replace(/\/sts/i, "")?.replace(/\d+/, "")?.trim()?.toLocaleUpperCase()
+
+    if (!program) {
+        return ctx.reply("Plase enter your program name also")
+    }
+    if (!enr || enr[0].length < 9) {
+        return await ctx.reply("Invalid enrollment number: \n" + "To check your assignment/practical status send this command\n" +
+            "/sts <enrollmentno> <program>\n" +
+            "/sts 123456789 BCA");
+    }
+
+    let res = await getStatusData(enr[0], program)
+
+    let pt = res.practical;
+    let asm = res.assignment;
+
+    if (pt.length < 1 && asm.length < 1) {
+        return ctx.reply("I din't found any status update for program.")
+    }
+
+    let status = asm.length > 0 ? "Your Assignment status\\: \n```js\nStatus  Updtd On  Subject" : ""
+
+    for (let i = 0; i < asm.length; i++) {
+        status += `\n${asm[i].status.includes("Check Grade") ? '✅   ' : "☑️   "}  ${formatDate(asm[i].date)}  ${asm[i].subject} `
+    }
+    status += asm.length > 0 ? "```" : "";
+
+
+    status += pt.length > 0 ? "Your Practicals status\\: \n```js\nStatus  Updtd On  Subject" : ""
+
+    for (let i = 0; i < pt.length; i++) {
+        status += `\n${pt[i].status.includes("Check Grade") ? '✅   ' : "☑️   "}  ${formatDate(pt[i].date)}  ${pt[i].subject} `
+    }
+    status += pt.length > 0 ? "```" : "";
+    status += "\n\n>✅ \\= Done\\,    ☑️ \\= In\\-Progress";
+
+    await ctx.reply(status, { parse_mode: "MarkdownV2" });
+
+}
+
+const getStatus = async (enr, code) => {
+   
+    let program = code
+    if (!program) {
+        return ctx.reply("Plase enter your program name also")
+    }
+
+    let res = await getStatusData(enr[0], program)
+
+    let pt = res.practical;
+    let asm = res.assignment;
+
+    if (pt.length < 1 && asm.length < 1) {
+        return ctx.reply("I din't found any status update for program.")
+    }
+
+    let status = asm.length > 0 ? "Your Assignment status\\: \n```js\nStatus  Updtd On  Subject" : ""
+
+    for (let i = 0; i < asm.length; i++) {
+        status += `\n${asm[i].status.includes("Check Grade") ? '✅   ' : "☑️   "}  ${formatDate(asm[i].date)}  ${asm[i].subject} `
+    }
+    status += asm.length > 0 ? "```" : "";
+
+
+    status += pt.length > 0 ? "Your Practicals status\\: \n```js\nStatus  Updtd On  Subject" : ""
+
+    for (let i = 0; i < pt.length; i++) {
+        status += `\n${pt[i].status.includes("Check Grade") ? '✅   ' : "☑️   "}  ${formatDate(pt[i].date)}  ${pt[i].subject} `
+    }
+    status += pt.length > 0 ? "```" : "";
+    status += "\n\n>✅ \\= Done\\,    ☑️ \\= In\\-Progress";
+
+    return status
+
+}
+
+module.exports = { getMarksCard, getFormattedGrade, statusHandler, getStatus }

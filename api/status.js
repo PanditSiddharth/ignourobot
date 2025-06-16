@@ -78,4 +78,4 @@ function formatDate(dateStr) {
     return `${formattedDay}-${formattedMonth}-${formattedYear}`;
 }
 
-export { getStatusData, formatDate }
+module.exports = { getStatusData, formatDate }

@@ -1,23 +1,6 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-
-const programs = [
-    [
-        "BCA", "BCAOL", "MCA", "MCAOL", "MP", "MPB",
-        "PGDCA", "PGDCA_NEW", "PGDHRM", "PGDFM", "PGDOM",
-        "PGDMM", "PGDFMP", "MBF", "MCA_NEW"
-    ],
-    [
-        "ASSO", "BA", "BCOM", "BDP", "BSC"
-    ],
-    [
-        "BAECH", "BAEGH", "BAG", "BAHDH", "BAHIH", "BAPAH", "BAPCH", "BAPSH",
-        "BASOH", "BAVTM", "BCOMG", "BCOMOL", "BSCANH", "BSCBCH", "BSCG",
-        "BSWG", "BSWGOL"
-    ],
-];
-
-
+const programs = require('../utils/programs');
 
 /**
  * Retrieves student information and result based on the enrollment number and program.
@@ -27,20 +10,10 @@ const programs = [
  * @returns {Promise<{name: string, enrollmentNo: number, marks: {subject: string, assignmentMarks: string, examMarks: string, practicalMarks: string, labMarks: string}[]}>} 
  * A promise that resolves to an object containing the student's name, enrollment number, and an array of results.
  */
-export async function fetchGradeCard(enrollmentNo, program) {
-    let ab = 1
-    if (programs[0].includes(program)) {
-        ab = 1
-    }
-    else if (programs[1].includes(program)) {
-        ab = 2
-    } else  if (programs[2].includes(program)) {
-        ab = 4
-    } else {
-        ab = 3
-    }
-console.log(enrollmentNo, program, ab)
-    const url = `https://gradecard.ignou.ac.in/gradecard/view_gradecard.aspx?eno=${enrollmentNo}&prog=${program}&type=${ab}`;
+async function fetchGradeCard(enrollmentNo, program) {
+    const programType = programs.getTypeForProgram(program);
+    
+    const url = `https://gradecard.ignou.ac.in/gradecard/view_gradecard.aspx?eno=${enrollmentNo}&prog=${program}&type=${programType}`;
     const { data } = await axios.get(url);
 
     // Use Cheerio to parse HTML
@@ -67,3 +40,4 @@ console.log(enrollmentNo, program, ab)
     };
 }
 
+module.exports = fetchGradeCard;

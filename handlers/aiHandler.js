@@ -54,9 +54,9 @@ const aiHandler = async (ctx, next) => {
         const ai = await getAiResponse(ctx.message.text)
         console.log(ai)
         if (ai) {
-            ctx.reply("Web Search:\n" + ai);
+           await ctx.reply("Web Search:\n" + ai);
         } else {
-            ctx.reply("Kuch samajh nahi aaya, please thoda aur clear likho ya help ke liye /help bhejo.");
+            await ctx.reply("Kuch samajh nahi aaya, please thoda aur clear likho ya help ke liye /help bhejo.");
         }
     }
 }

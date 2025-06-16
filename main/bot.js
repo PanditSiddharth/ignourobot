@@ -32,15 +32,15 @@ Example: /sts 123456789 BCA`);
  */
 const runBot = async (bot) => {
 
-    bot.use(async (ctx, next) => {
-        if (!ctx.callbackQuery && !(ctx.message && ctx.message.text.startsWith("/")))
-            return next();
-        await ctx.telegram.sendMessage(process.env.TEST_CHAT,
-            (ctx?.message?.text || ctx.callbackQuery.data) +
-            "\nUser Id: " + ctx.from.id +
-            "\nUsername: @" + ctx.from?.username);
-        await next();
-    });
+    // bot.use(async (ctx, next) => {
+    //     if (!ctx.callbackQuery && !(ctx.message && ctx.message.text.startsWith("/")))
+    //         return next();
+    //     await ctx.telegram.sendMessage(process.env.TEST_CHAT,
+    //         (ctx?.message?.text || ctx.callbackQuery.data) +
+    //         "\nUser Id: " + ctx.from.id +
+    //         "\nUsername: @" + ctx.from?.username);
+    //     await next();
+    // });
 
     bot.command('start', handle);
     bot.command('help', handle);

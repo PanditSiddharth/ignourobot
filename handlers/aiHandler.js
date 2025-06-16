@@ -64,7 +64,7 @@ Example: /sts 123456789 BCA`);
         if (s)
             ctx.reply("Web Search:\n" + s)
     } else if (aiCode == "STSCODE") {
-        ctx.deleteMessage().catch(console.log)
+        // ctx.deleteMessage().catch(console.log)
         const dt = getEnrolmentAndCode(ctx.message.text)
         const status = await getStatus(dt.enrollment, dt.code)
         if (status)

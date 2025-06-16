@@ -29,7 +29,7 @@ const aiHandler = async (ctx, next) => {
         // fetchGradeCard()
     } else if (aiCode == "HELPCODE") {
         async function handle(ctx) {
-            await ctx.reply(getHelpResponse(ctx.message.text, ctx));
+            await ctx.reply(await getHelpResponse(ctx.message.text, ctx));
         }
         handle(ctx).catch(console.log)
     } else if (aiCode == "MARKCODE") {

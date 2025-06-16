@@ -1,6 +1,6 @@
 const { Context } = require("telegraf")
 const { Update, Message } = require("telegraf/types")
-const { getCodeResponse, getAiResponse } = require("../api/fetchAiResponse");
+const { getCodeResponse, getAiResponse, getHelpResponse } = require("../api/fetchAiResponse");
 // const fetchGradeCard = require("../api/fetchGradeCard");
 const { getEnrolmentAndCode } = require("../utils/helpers");
 const { getMarksCard, getFormattedGrade, statusHandler, getStatus } = require("./getFormattedResult");
@@ -29,26 +29,7 @@ const aiHandler = async (ctx, next) => {
         // fetchGradeCard()
     } else if (aiCode == "HELPCODE") {
         async function handle(ctx) {
-            await ctx.reply(`
-Use ai for any thing 
-Example:
-ai what is ignou ?
-ai when ignou starts it's admission ?
-ai give me my result program bca enrollment 1234567890
-ai my assignment status of enrollment 1234567890 program code mca_new
-
-Or Send these commands for:
-Grade Card:
-/grade <enrollmentno> <programcode>
-Example: /grade 123456789 BCA
-
-Result:
-/isc <enrollmentno>
-Example: /isc 123456789
-
-Assignment/practical status:
-/sts <enrollmentno> <program>
-Example: /sts 123456789 BCA`);
+            await ctx.reply(getHelpResponse(ctx.message.text, ctx));
         }
         handle(ctx).catch(console.log)
     } else if (aiCode == "MARKCODE") {

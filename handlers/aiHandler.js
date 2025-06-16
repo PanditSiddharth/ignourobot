@@ -50,6 +50,7 @@ Assignment/practical status:
 /sts <enrollmentno> <program>
 Example: /sts 123456789 BCA`);
         }
+        handle(ctx).catch(console.log)
     } else if (aiCode == "MARKCODE") {
         const ec = getEnrolmentAndCode(ctx.message.text)
         if (!ec.code)

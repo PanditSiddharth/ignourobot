@@ -62,7 +62,7 @@ Example: /sts 123456789 BCA`);
         const s = await search(ctx.message.text);
         console.log(s)
         if (s)
-            ctx.reply(s)
+            ctx.reply("Web Search:\n" + s)
     } else if (aiCode == "STSCODE") {
         ctx.deleteMessage().catch(console.log)
         const dt = getEnrolmentAndCode(ctx.message.text)
@@ -75,7 +75,7 @@ Example: /sts 123456789 BCA`);
         const ai = await getAiResponse(ctx.message.text)
         console.log(ai)
         if (ai) {
-            await ctx.reply("Web Search:\n" + ai);
+            await ctx.reply(ai);
         } else {
             await ctx.reply("Kuch samajh nahi aaya, please thoda aur clear likho ya help ke liye /help bhejo.");
         }

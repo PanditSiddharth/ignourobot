@@ -39,6 +39,7 @@ const aiHandler = async (ctx, next) => {
         return ctx.reply("Enrollment number ke bina marks nahi mil sakte. Enrollment number program code ke sath bhejo.")
     } else if (aiCode == "SEARCHCODE") {
         const s = await search(ctx.message.text);
+        console.log(s)
         if(s)
         ctx.reply(s)
     } else if (aiCode == "STSCODE") {
@@ -51,6 +52,7 @@ const aiHandler = async (ctx, next) => {
             ctx.reply("Something went wrong in fetching status")
     } else {
         const ai = await getAiResponse(ctx.message.text)
+        console.log(ai)
         if (ai) {
             ctx.reply("Web Search:\n" + ai);
         } else {

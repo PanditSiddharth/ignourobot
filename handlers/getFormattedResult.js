@@ -276,18 +276,11 @@ const statusHandler = async (ctx, next) => {
 const getStatus = async (enr, code) => {
    
     let program = code
-    if (!program) {
-        return ctx.reply("Plase enter your program name also")
-    }
 
     let res = await getStatusData(enr[0], program)
 
     let pt = res.practical;
     let asm = res.assignment;
-
-    if (pt.length < 1 && asm.length < 1) {
-        return ctx.reply("I din't found any status update for program.")
-    }
 
     let status = asm.length > 0 ? "Your Assignment status\\: \n```js\nStatus  Updtd On  Subject" : ""
 

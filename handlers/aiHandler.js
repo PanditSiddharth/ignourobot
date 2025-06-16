@@ -28,7 +28,28 @@ const aiHandler = async (ctx, next) => {
         ctx.reply(marks, { parse_mode: "MarkdownV2" })
         // fetchGradeCard()
     } else if (aiCode == "HELPCODE") {
+        async function handle(ctx) {
+            await ctx.reply(`
+Use ai for any thing 
+Example:
+ai what is ignou ?
+ai when ignou starts it's admission ?
+ai give me my result program bca enrollment 1234567890
+ai my assignment status of enrollment 1234567890 program code mca_new
 
+Or Send these commands for:
+Grade Card:
+/grade <enrollmentno> <programcode>
+Example: /grade 123456789 BCA
+
+Result:
+/isc <enrollmentno>
+Example: /isc 123456789
+
+Assignment/practical status:
+/sts <enrollmentno> <program>
+Example: /sts 123456789 BCA`);
+        }
     } else if (aiCode == "MARKCODE") {
         const ec = getEnrolmentAndCode(ctx.message.text)
         if (!ec.code)
@@ -40,8 +61,8 @@ const aiHandler = async (ctx, next) => {
     } else if (aiCode == "SEARCHCODE") {
         const s = await search(ctx.message.text);
         console.log(s)
-        if(s)
-        ctx.reply(s)
+        if (s)
+            ctx.reply(s)
     } else if (aiCode == "STSCODE") {
         ctx.deleteMessage().catch(console.log)
         const dt = getEnrolmentAndCode(ctx.message.text)
@@ -54,7 +75,7 @@ const aiHandler = async (ctx, next) => {
         const ai = await getAiResponse(ctx.message.text)
         console.log(ai)
         if (ai) {
-           await ctx.reply("Web Search:\n" + ai);
+            await ctx.reply("Web Search:\n" + ai);
         } else {
             await ctx.reply("Kuch samajh nahi aaya, please thoda aur clear likho ya help ke liye /help bhejo.");
         }

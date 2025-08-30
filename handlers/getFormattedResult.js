@@ -72,6 +72,7 @@ const calc = (am, em, sub) => {
     let realEm = Math.round(em * (100 - +subb.aw) / 100 * (subb.mm/100))
 
     res.got = realAm + realEm
+    res.got = isNaN(res.got) ? "0 " : res.got
     return res
 }
 

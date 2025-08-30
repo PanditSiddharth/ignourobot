@@ -6,6 +6,5 @@ try {
 runServer(bot);
 runBot(bot).catch(console.log);
 } catch (error) {
-
 }
 

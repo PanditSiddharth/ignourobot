@@ -41,6 +41,7 @@ let courses = {
     MCS023: { mm: 100, aw: 25 },
     MCS024: { mm: 100, aw: 25 },
     MCSL016: { mm: 100, aw: 25 },
+    BCSP064: { mm: 200, aw: 25 },
 
     // MCA_NEW 
     MCS201: { mm: 100, aw: 30 },
@@ -149,7 +150,7 @@ console.log(sub.replace(/\d+/, "")?.trim()?.endsWith("P"), sub)
         lm = "-"
         console.log(am, lm)
     }
-    else if(sub.replace(/\d+/, "")?.trim()?.endsWith("P") && subb.mm >100){
+    else if(sub.replace(/\d+/, "")?.trim()?.endsWith("P")){
         if(lm == "-")
             return {got: +em, in: +subb.mm}
         else {
@@ -188,9 +189,29 @@ console.log(sub.replace(/\d+/, "")?.trim()?.endsWith("P"), sub)
     }
 }
 
+const calc = (am, em, sub) => {
+    let res = { got: "_ ", in: "_ " }
+    if (!courses[sub])
+        return res;
+    let subb = courses[sub]
+    res.in = subb.mm == 50 ? "50 " : subb.mm; // formatted 50
+
+    let realAm = Math.round(am * subb.aw / 100 * (subb.mm/100))
+    let realEm = Math.round(em * (100 - +subb.aw) / 100 * (subb.mm/100))
+
+    res.got = realAm + realEm
+    return res
+}
+
 const getMarksCard = async (enrollment, program) => {
     let result = await fetchGradeCard(enrollment, program)
+    result.marks = result.marks.map(res => {
+        let calcc = calc(res.assignmentMarks == "-" ? res.labMarks : res.assignmentMarks,
+             res.examMarks == "-" ? res.practicalMarks : res.examMarks, res.subject)
+        return {...res, ...calcc}
+    })
 
+console.log(result)
     if (result.marks.length < 1)
         return "Your selected program " + program.replace(/\_/, "\\_") + "'s I did'nt found grade card result"
     let gradeCard = `Your Marks Card: 
@@ -198,26 +219,17 @@ const getMarksCard = async (enrollment, program) => {
 \`\`\`js
 Asm   Exm  lbm   Pcnt        Sub   `
     let res = result.marks;
-    let pctg = { got: 0, in: 0 }
-    let div = 0
+    let total = { got: 0, in: 0 }
 
-    for (let i = 0; i < res.length; i++) {
-        let am = res[i].assignmentMarks;
-        let pm = res[i].practicalMarks;
-        let em = res[i].examMarks;
-        let lm = res[i].labMarks;
-        let sub = res[i].subject;
-        let pcnt = calcPercent(am, lm, em == "-" ? pm : em, sub, program);
-        pctg.got = +pctg.got + +pcnt.got;
-        // console.log(pcnt.in)
-        pctg.in = pctg.in + +pcnt.in;
-
-        gradeCard += `\n${getfm(am)}    ${getfem(em, pm)}    ${getfm(lm)}   ${(pcnt.got == 0 ? "0 " : Math.round(pcnt.got)) + " in " + pcnt.in}   ${sub}`
+    for (let i of result.marks) {
+        total.got += i.got;
+        total.in += +i.in;
+        gradeCard += `\n${getfm(i.assignmentMarks)}    ${getfem(i.examMarks, i.practicalMarks)}    ${getfm(i.labMarks)}   ${(i.got == 0 ? "0 " : Math.round(i.got)) + " in " + i.in}   ${i.subject}`
     }
     gradeCard += "```"
-    console.log(pctg)
-    gradeCard += "\n\n>Result\\: " + "Got " + pctg.got + " in " + pctg.in
-    gradeCard += "\n>Your Percentage\\: " + Math.round(+pctg.got / +pctg.in * 100) + " %"
+    console.log(total)
+    gradeCard += "\n\n>Result\\: " + "Got " + total.got + " in " + total.in
+    gradeCard += "\n>Your Percentage\\: " + Math.round(+total.got / +total.in * 100) + " %"
     gradeCard += "\n>More details: [Click Here](https://telegra.ph/Details-of-that-grade-card-result-08-17)"
 
     return gradeCard;

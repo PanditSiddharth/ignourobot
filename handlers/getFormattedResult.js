@@ -129,66 +129,6 @@ Asm   Exm  Pcnt   Sub   `
 }
 
 
-/**
- * 
- * @param {Number} am 
- * @param {Number} lm 
- * @param {Number} em 
- * @param {String} sub 
- * @param {String} prog 
- * @returns {got: Number, in: Number}
- */
-function calcPercent(am, lm, em, sub, prog) {
-    let res = { got: "0 ", in: " 0 " }
-    if (!courses[sub])
-        return res
-    let subb = courses[sub]
-console.log(sub.replace(/\d+/, "")?.trim()?.endsWith("P"), sub)
-    if(sub?.trim() == "MCSP232"){
-        console.log("yes it's run")
-        am = lm;
-        lm = "-"
-        console.log(am, lm)
-    }
-    else if(sub.replace(/\d+/, "")?.trim()?.endsWith("P")){
-        if(lm == "-")
-            return {got: +em, in: +subb.mm}
-        else {
-            return {got: +lm + +em, in: +subb.mm }
-        }
-    }
-
-    if ([am, em].every(v => {
-        if (!isNaN(v)) {
-            if (v > 39)
-                return true;
-            else if (["BCA", "MCA", "BCA_NEW", "MCA_NEW", 'MCAOL', 'BCAOL'].includes(prog)) {
-                if (v < 40)
-                    return false
-                else
-                    return true
-            } else if (v < 33)
-                return false
-            else
-                return true
-        } else
-            return false
-    })) {
-        if (lm == "-")
-            res.got = Math.round(am * subb.aw / 100 * (subb.mm/100)) + Math.round(em * ((100 - +subb.aw) / 100) * (subb.mm/100))
-        else {
-            res.got = Math.round(am * +subb.aw / 100 * (subb.mm/100)) +
-                Math.round((+em + +lm) / 2 * (100 - +subb.aw) / 100 * (subb.mm/100))
-        }
-
-        // res.got = Math.round(res.got * subb.mm / 100)
-        res.in = subb.mm == 50 ? "50 " : subb.mm;
-        return res
-    } else {
-        return res
-    }
-}
-
 const calc = (am, em, sub) => {
     let res = { got: "_ ", in: "_ " }
     if (!courses[sub])

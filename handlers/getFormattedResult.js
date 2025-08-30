@@ -95,7 +95,7 @@ Asm   Exm  lbm   Pcnt       Sub   `
     let total = { got: 0, in: 0 }
 
     for (let i of result.marks) {
-        total.got += i.got;
+        total.got += +i.got;
         total.in += +i.in;
         gradeCard += `\n${getfm(i.assignmentMarks)}    ${getfem(i.examMarks, i.practicalMarks)}    ${getfm(i.labMarks)}   ${(i.got == 0 ? "0 " : Math.round(i.got)) + " in " + i.in}  ${i.subject}`
     }

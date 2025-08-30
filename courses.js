@@ -1,3 +1,12 @@
+/*
+mm = max marks 
+aw = assignment Weightage
+you only need to write these two things 
+with correct subject code 
+in bellow formate
+*/
+
+
 let courses = {
     // BCA
     BCS011: { mm: 100, aw: 25 },

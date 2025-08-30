@@ -62,7 +62,7 @@ Asm   Exm  Pcnt   Sub   `
 
 
 const calc = (am, em, sub) => {
-    let res = { got: "_ ", in: "_ " }
+    let res = { got: "0 ", in: "0 " }
     if (!courses[sub])
         return res;
     let subb = courses[sub]
@@ -89,14 +89,14 @@ console.log(result)
     let gradeCard = `Your Marks Card: 
 
 \`\`\`js
-Asm   Exm  lbm   Pcnt        Sub   `
+Asm   Exm  lbm   Pcnt       Sub   `
     let res = result.marks;
     let total = { got: 0, in: 0 }
 
     for (let i of result.marks) {
         total.got += i.got;
         total.in += +i.in;
-        gradeCard += `\n${getfm(i.assignmentMarks)}    ${getfem(i.examMarks, i.practicalMarks)}    ${getfm(i.labMarks)}   ${(i.got == 0 ? "0 " : Math.round(i.got)) + " in " + i.in}   ${i.subject}`
+        gradeCard += `\n${getfm(i.assignmentMarks)}    ${getfem(i.examMarks, i.practicalMarks)}    ${getfm(i.labMarks)}   ${(i.got == 0 ? "0 " : Math.round(i.got)) + " in " + i.in}  ${i.subject}`
     }
     gradeCard += "```"
     console.log(total)

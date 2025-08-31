@@ -46,7 +46,7 @@ let courses = {
     MCS022: { mm: 100, aw: 25 },
     MCS023: { mm: 100, aw: 25 },
     MCS024: { mm: 100, aw: 25 },
-    MCSL016: { mm: 100, aw: 25 },
+    MCSL016: { mm: 50, aw: 25 },
     BCSP064: { mm: 200, aw: 25 },
 
 // Add More Subjects List to make it more accurate 

@@ -93,7 +93,7 @@ const getMarks = async (ctx, next) => {
         }
 
         program = program == 'MCA' ? "MCA_NEW" : program
-        if (!['BCA', 'MCA_NEW', "MCA", "MCAOL", 'BCAOL'].includes(program)) {
+        if (!['BCA', 'MCA_NEW', "MCA", "MCAOL", 'BCAOL', "BSCBCH"].includes(program)) {
             return ctx.reply("This feature is only for BCA MCA students it will slowly slowly available for all.")
         }
 

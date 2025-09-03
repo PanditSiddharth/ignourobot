@@ -77,7 +77,71 @@ let courses = {
     MCSL229: { mm: 50, aw: 30 },
     MCS230: { mm: 100, aw: 30 },
     MCS231: { mm: 100, aw: 30 },
-    MCSP232: { mm: 200, aw: 25 }
+    MCSP232: { mm: 200, aw: 25 },
+
+
+    // BSCBCH
+  // Core Theory & Labs
+  BBCCT101: { mm: 50, aw: 30 },
+  BBCCL102: { mm: 25, aw: 30 },
+  BBCCT103: { mm: 50, aw: 30 },
+  BBCCL104: { mm: 25, aw: 30 },
+  BBCCT105: { mm: 50, aw: 30 },
+  BBCCL106: { mm: 25, aw: 30 },
+  BBCCT107: { mm: 50, aw: 30 },
+  BBCCL108: { mm: 25, aw: 30 },
+  BBCCT109: { mm: 50, aw: 30 },
+  BBCCL110: { mm: 25, aw: 30 },
+  BBCCT111: { mm: 50, aw: 30 },
+  BBCCL112: { mm: 25, aw: 30 },
+  BBCCT113: { mm: 50, aw: 30 },
+  BBCCL114: { mm: 25, aw: 30 },
+  BBCCT115: { mm: 50, aw: 30 },
+  BBCCL116: { mm: 25, aw: 30 },
+  BBCCT117: { mm: 50, aw: 30 },
+  BBCCL118: { mm: 25, aw: 30 },
+  BBCCT119: { mm: 50, aw: 30 },
+  BBCCL120: { mm: 25, aw: 30 },
+  BBCC121: { mm: 50, aw: 30 },
+  BBCCL122: { mm: 25, aw: 30 },
+  BBCC123: { mm: 50, aw: 30 },
+  BBCCL124: { mm: 25, aw: 30 },
+  BBCC125: { mm: 50, aw: 30 },
+  BBCCL126: { mm: 25, aw: 30 },
+  BBCC127: { mm: 50, aw: 30 },
+  BBCCL128: { mm: 25, aw: 30 },
+
+  // Discipline Electives
+  BBCET141: { mm: 50, aw: 30 },
+  BBCEL142: { mm: 25, aw: 30 },
+  BBCET143: { mm: 50, aw: 30 },
+  BBCEL144: { mm: 25, aw: 30 },
+  BBCET145: { mm: 50, aw: 30 },
+  BBCEL146: { mm: 25, aw: 30 },
+  BBCET151: { mm: 50, aw: 30 },
+  BBCEL152: { mm: 25, aw: 30 },
+
+  // AECC
+  BEVAE181: { mm: 100, aw: 0 },
+  BEGAE182: { mm: 100, aw: 0 },
+
+  // SEC
+  BBCS183: { mm: 50, aw: 50 },
+  BBCS185: { mm: 50, aw: 50 },
+
+  // Generic Electives (Chemistry, Biology, Zoology)
+  BCHCT131: { mm: 50, aw: 30 },
+  BCHCT133: { mm: 25, aw: 30 },
+  BCHCL132: { mm: 25, aw: 30 },
+    BCHCL134: { mm: 25, aw: 30 },
+  BCHET147: { mm: 50, aw: 30 },
+  BCHEL148: { mm: 25, aw: 30 },
+
+  BBYCT131: { mm: 50, aw: 30 },
+  BBYCL132: { mm: 25, aw: 30 },
+
+  BZYCT131: { mm: 50, aw: 30 },
+  BZYCL132: { mm: 25, aw: 30 },
 };
 
 module.exports = { courses }

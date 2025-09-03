@@ -4,19 +4,19 @@ let { courses } = require("../courses")
 
 function getfm(am) {
     if (['A', 'B', 'C', 'D', 'E', 'F'].includes(am))
-        return am + " "
+        return (am + "  ").substring(0, 3)
     else if (isNaN(am) == true)
-        return "0 "
-    else return am
+        return "0  "
+    else return (am + "  ").substring(0, 3)
 }
 
 function getfem(em, pm) {
     let am = em == "-" ? pm : em;
     if (['A', 'B', 'C', 'D', 'E', 'F'].includes(am))
-        return am + " "
+        return (am + "  ").substring(0, 3)
     else if (isNaN(am) == true)
-        return "0 "
-    else return am
+        return "0  "
+    else return (am + "  ").substring(0, 3)
 }
 
 const getFormattedGrade = async (enrollment, program) => {
@@ -27,7 +27,7 @@ const getFormattedGrade = async (enrollment, program) => {
     let gradeCard = `Your Grade Card: 
 
 \`\`\`js
-Asm   Exm  Pcnt   Sub   `
+Asm     Exm  Pcnt   Sub   `
     let res = result.marks;
     let percentage = 0
     let div = 0
@@ -62,7 +62,7 @@ Asm   Exm  Pcnt   Sub   `
 
 
 const calc = (am, em, sub) => {
-    let res = { got: "0 ", in: "0 " }
+    let res = { got: "0  ", in: "0  " }
     if (!courses[sub])
         return res;
     let subb = courses[sub]
@@ -72,8 +72,12 @@ const calc = (am, em, sub) => {
     let realEm = Math.round(em * (100 - +subb.aw) / 100 * (subb.mm/100))
 
     res.got = realAm + realEm
-    return (isNaN(res.got) ? { got: "0 ", in: "0 " } : res)
+    return (isNaN(res.got) ? { got: "0  ", in: "0  " } : res)
     
+}
+
+function padRight(str, length) {
+    return (str + " ".repeat(length)).substring(0, length);
 }
 
 const getMarksCard = async (enrollment, program) => {
@@ -84,20 +88,20 @@ const getMarksCard = async (enrollment, program) => {
         return {...res, ...calcc}
     })
 
-console.log(result)
     if (result.marks.length < 1)
         return "Your selected program " + program.replace(/\_/, "\\_") + "'s I did'nt found grade card result"
     let gradeCard = `Your Marks Card: 
 
 \`\`\`js
-Asm   Exm  lbm   Pcnt       Sub   `
+Asm  Exm  Lbm  Marks       Sub   `
     let res = result.marks;
     let total = { got: 0, in: 0 }
 
     for (let i of result.marks) {
         total.got += +i.got;
         total.in += +i.in;
-        gradeCard += `\n${getfm(i.assignmentMarks)}    ${getfem(i.examMarks, i.practicalMarks)}    ${getfm(i.labMarks)}   ${(i.got == 0 ? "0 " : Math.round(i.got)) + " in " + i.in}  ${i.subject}`
+        let marksStr = (i.got == 0 ? "0" : Math.round(i.got)) + " in " + i.in;
+        gradeCard += `\n${padRight(getfm(i.assignmentMarks), 5)}${padRight(getfem(i.examMarks, i.practicalMarks), 5)}${padRight(getfm(i.labMarks), 5)}${padRight(marksStr, 11)} ${i.subject}`
     }
     gradeCard += "```"
     console.log(total)

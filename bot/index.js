@@ -17,7 +17,7 @@ bot.use(async (ctx, next) => {
   try {
     await connect();
     console.log("Update handled");
-    ctx.reply("⏳ Processing your request...");
+
     await next();
   } catch (err) {
     console.error("Bot error:", err);

@@ -1,6 +1,5 @@
-const fetchGradeCard = require("../api/fetchGradeCard");
-const { getStatusData, formatDate } = require("../api/status");
-let { courses } = require("../courses")
+import { getStatusData, formatDate } from "../api/status.js";
+import courses from "../courses.js";
 
 function getfm(am) {
     if (['A', 'B', 'C', 'D', 'E', 'F'].includes(am))
@@ -19,53 +18,10 @@ function getfem(em, pm) {
     else return (am + "  ").substring(0, 3)
 }
 
-const getFormattedGrade = async (enrollment, program) => {
-    let result = await fetchGradeCard(enrollment, program)
-
-    if (result.marks.length < 1)
-        return "Your selected program " + program + "'s I did'nt found grade card result"
-    let gradeCard = `Your Grade Card: 
-
-\`\`\`js
-Asm     Exm  Pcnt   Sub   `
-    let res = result.marks;
-    let percentage = 0
-    let div = 0
-
-
-    for (let i = 0; i < res.length; i++) {
-        let am = res[i].assignmentMarks
-        let pm = res[i].practicalMarks
-        let em = res[i].examMarks;
-
-        let examMarks = isNaN(em) == true ? (isNaN(pm) ? "- " : pm) : res[i].examMarks;
-        let percentag = "\\- "
-        if (!isNaN(examMarks) && !isNaN(am) && examMarks >= 33) {
-            if (program == "BCA") {
-                percentag = examMarks * 3 / 4 + am * 1 / 4
-            } else
-                percentag = examMarks * 7 / 10 + am * 3 / 10
-
-            percentage += percentag
-            percentag = Math.round(percentag)
-            div++
-        }
-        gradeCard += `\n${getfm(am)}    ${getfem(em, pm)}    ${percentag}    ${res[i].subject}`
-    }
-    gradeCard += "```"
-
-    gradeCard += "\n\n>Your Approx Percentage\\: " + Math.round(percentage / div)
-    gradeCard += "\n>More details: [Click Here](https://telegra.ph/Details-of-that-grade-card-result-08-17)"
-
-    return gradeCard;
-}
-
 
 const calc = (am, em, sub) => {
     let res = { got: "0  ", in: "0  " }
-    if (!courses[sub])
-        return res;
-    let subb = courses[sub]
+    let subb = courses[sub] ? courses[sub] : { aw: 30, mm: 100 }
     res.in = subb.mm == 50 ? "50 " : subb.mm; // formatted 50
 
     let realAm = Math.round(am * subb.aw / 100 * (subb.mm/100))
@@ -80,8 +36,8 @@ function padRight(str, length) {
     return (str + " ".repeat(length)).substring(0, length);
 }
 
-const getMarksCard = async (enrollment, program) => {
-    let result = await fetchGradeCard(enrollment, program)
+const getMarksCard = async (result) => {
+
     result.marks = result.marks.map(res => {
         let calcc = calc(res.assignmentMarks == "-" ? res.labMarks : res.assignmentMarks,
              res.examMarks == "-" ? res.practicalMarks : res.examMarks, res.subject)
@@ -191,4 +147,26 @@ const getStatus = async (enr, code) => {
 
 }
 
-module.exports = { getMarksCard, getFormattedGrade, statusHandler, getStatus }
+
+// bot.on("callback_query", async (ctx, next) => {
+//     try {
+//         const { callback_query } = ctx.update;
+//         if (!callback_query.data.includes('eno') || !callback_query.data.includes('text')) return next();
+//         await ctx.answerCbQuery();
+//         await ctx.deleteMessage().catch((er) => { console.error(er) });
+//         if (callback_query.data == "close") return;
+//         const res = await igres(callback_query.data);
+//         if (res) {
+//             if (res.match(/\d/)) return await ctx.reply(res);
+//             send(ctx, "Your result is not available for " + JSON.parse(callback_query.data).text + " Session", { time: 80 });
+//         } else {
+//             send(ctx, "Some error with this enrollment or in the date you selected", { time: 20 });
+//         }
+//     } catch (error) {
+//         console.error("query", error);
+//     }
+// });
+
+
+
+export { getMarksCard, statusHandler, getStatus }

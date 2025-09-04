@@ -1,5 +1,5 @@
-const { Telegraf } = require('telegraf');
-const config = require('./config');
-const bot = new Telegraf(config.botToken, { handlerTimeout: 1000000 });
+import { Telegraf } from 'telegraf';
+import { botToken } from './config.js';
+const bot = new Telegraf(botToken, { handlerTimeout: 1000000 });
 
-module.exports = bot;
+export default bot;

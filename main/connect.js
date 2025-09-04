@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const config = require('./config')
+import { connect as _connect } from 'mongoose';
+import { mongoUri } from './config.js';
 let cachedConnection = null;
 
 const connect = async () => {
@@ -9,7 +9,7 @@ const connect = async () => {
   }
 
   try {
-    const conn = await mongoose.connect(config.mongoUri);
+    const conn = await _connect(mongoUri);
      cachedConnection = conn;
     console.log('New database connection established');
     return conn;
@@ -19,4 +19,4 @@ const connect = async () => {
   }
 };
 
-module.exports = connect
+export default connect

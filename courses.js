@@ -150,4 +150,4 @@ let courses = {
   BZYCL132: { mm: 25, aw: 30 },
 };
 
-module.exports = { courses }
+export default { courses }

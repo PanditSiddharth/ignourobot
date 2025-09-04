@@ -1,9 +1,8 @@
-require('dotenv').config();
+import { configDotenv } from "dotenv"
+configDotenv();
 
-module.exports = {
-    port: process.env.PORT || 3000,
-    botToken: process.env.TOKEN,
-    testChat: process.env.TEST_CHAT,
-    nodeEnv: process.env.NODE_ENV || 'development',
-    mongoUri: process.env.MONGO_URI
-};
+export const port = process.env.PORT || 3000;
+export const botToken = process.env.TOKEN;
+export const testChat = process.env.TEST_CHAT;
+export const nodeEnv = process.env.NODE_ENV || 'development';
+export const mongoUri = process.env.MONGO_URI;

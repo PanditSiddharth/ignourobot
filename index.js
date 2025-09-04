@@ -1,6 +1,7 @@
-const runBot = require("./main/bot");
-const runServer = require("./main/server");
-const bot = require("./main/telegraf");
+// import runBot from "./main/bot";
+import { runBot } from "./bot/index.js";
+import runServer from "./main/server.js";
+import bot from "./main/telegraf.js";
 
 try {
 runServer(bot);

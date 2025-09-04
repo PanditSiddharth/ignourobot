@@ -28,4 +28,4 @@ const programs = {
     }
 };
 
-module.exports = programs;
+export default programs;

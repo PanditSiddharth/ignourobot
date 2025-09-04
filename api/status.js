@@ -1,5 +1,5 @@
-const cheerio = require("cheerio")
-const axios = require('axios');
+import { load } from "cheerio";
+import axios from 'axios';
 
 const config = {
     headers: {
@@ -22,7 +22,7 @@ async function getStatusData(enrollmentNo, program) {
         const data = `EnrNo=${enrollmentNo}&program=${program}&Submit=Submit`;
         let response = await axios.post('https://isms.ignou.ac.in/changeadmdata/StatusAssignment.ASP', data, config)
         let htmld = response.data;
-        const $ = cheerio.load(htmld)
+        const $ = load(htmld)
         let res = {
             assignment: [],
             practical: []
@@ -78,4 +78,4 @@ function formatDate(dateStr) {
     return `${formattedDay}-${formattedMonth}-${formattedYear}`;
 }
 
-module.exports = { getStatusData, formatDate }
+export { getStatusData, formatDate }

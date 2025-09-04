@@ -1,6 +1,6 @@
-const express = require('express');
-const config = require('./config');
-const { Telegraf, Context } = require("telegraf");
+import express, { json, urlencoded } from 'express';
+import { port, nodeEnv } from './config.js';
+import { Telegraf, Context } from "telegraf";
 
 /**
  * 
@@ -10,8 +10,8 @@ const runServer = async (bot) => {
 const app = express();
 
 // Initialize
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(json());
+app.use(urlencoded({ extended: true }));
 
 // Routes
 app.post('/api/bot', async (req, res) => {
@@ -27,9 +27,9 @@ app.post('/api/bot', async (req, res) => {
 app.get('/health', (_, res) => res.json({ status: 'ok' }));
 
 // Start server
-app.listen(config.port, () => {
-    console.log(`Server running on port ${config.port}`);
-    if (config.nodeEnv === 'development') {
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+    if (nodeEnv === 'development') {
         bot.launch({ dropPendingUpdates: true })
             .then(() => console.log('Bot launched in development mode'))
             .catch(console.error);
@@ -38,4 +38,4 @@ app.listen(config.port, () => {
 
 }
 
-module.exports = runServer
+export default runServer

@@ -1,6 +1,6 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
-const programs = require('../utils/programs');
+import axios from 'axios';
+import { load } from 'cheerio';
+import programs from '../utils/programs.js';
 
 /**
  * Retrieves student information and result based on the enrollment number and program.
@@ -17,7 +17,7 @@ async function fetchGradeCard(enrollmentNo, program) {
     const { data } = await axios.get(url);
 
     // Use Cheerio to parse HTML
-    const $ = cheerio.load(data);
+    const $ = load(data);
     let rows = $('#ctl00_ContentPlaceHolder1_gvDetail tr')
     let resdata = []
     for (let i = 1; i < rows.length - 1; i++) {
@@ -27,7 +27,8 @@ async function fetchGradeCard(enrollmentNo, program) {
             assignmentMarks: $(rowData[1]).text(),
             labMarks: $(rowData[2]).text(),
             examMarks: $(rowData[6]).text(),
-            practicalMarks: $(rowData[7]).text()
+            practicalMarks: $(rowData[7]).text(),
+            isCompleted: $(rowData[8]).text()?.includes("Not") ? false : true
         })
     }
 
@@ -40,4 +41,4 @@ async function fetchGradeCard(enrollmentNo, program) {
     };
 }
 
-module.exports = fetchGradeCard;
+export default fetchGradeCard;

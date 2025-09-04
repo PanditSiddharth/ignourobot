@@ -1,5 +1,5 @@
 import express, { json, urlencoded } from 'express';
-import { port, nodeEnv } from './config.js';
+import { port, nodeEnv } from '../main/config.js';
 import { Telegraf, Context } from "telegraf";
 
 /**
@@ -17,10 +17,10 @@ app.use(urlencoded({ extended: true }));
 app.post('/api/bot', async (req, res) => {
     try {
         await bot.handleUpdate(req.body);
-        res.json({ success: true });
+        res.json({ ok: true });
     } catch (err) {
         console.error('Bot update error:', err);
-        res.status(500).json({ error: 'Bot update failed' });
+        res.status(500).json({ error: err.message });
     }
 });
 

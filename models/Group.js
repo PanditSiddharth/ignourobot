@@ -8,7 +8,7 @@ const GroupSchema = new mongoose.Schema({
 
   addedOn: { type: Date, default: Date.now },
   updatedOn: { type: Date, default: Date.now },
-}, { _id: false, minimize: true });
+}, { minimize: true });
 
 GroupSchema.pre("save", function (next) {
   this.updatedOn = Date.now();

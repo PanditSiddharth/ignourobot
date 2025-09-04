@@ -19,4 +19,4 @@ const connect = async () => {
   }
 };
 
-export default connect
+export {connect}

@@ -1,21 +1,21 @@
 // import { insertUserData, insertGroupData } from "./handlers.js";
 // import { findUserById, getBotStats } from "./statsFacade.js";
 // import { notifyPrivateUsers } from "./notify.js";
-// import { configDotenv } from "dotenv";
+import { configDotenv } from "dotenv";
 // import { start } from "./botInfo.js";
-// import connect from "../main/connect.js";
+import {connect} from "../main/connect.js";
 
 // import { getMarks, getSeasonButtons } from "../handlers/gradeAndMarks.js";
 // import { statusHandler } from "../handlers/getFormattedResult.js";
 // import { fetchResult } from "../api/fetchResult.js";
 
 
-// configDotenv();
+configDotenv();
 export const runBot = async (bot) => {
 // DB connect
-// await connect(process.env.MONGODB_URI);
 bot.use(async (ctx, next) => {
   try {
+    await connect();
     console.log("Update handled");
     ctx.reply("⏳ Processing your request...");
     await next();

@@ -1,13 +1,13 @@
-import { insertUserData, insertGroupData } from "./handlers.js";
-import { findUserById, getBotStats } from "./statsFacade.js";
-import { notifyPrivateUsers } from "./notify.js";
+// import { insertUserData, insertGroupData } from "./handlers.js";
+// import { findUserById, getBotStats } from "./statsFacade.js";
+// import { notifyPrivateUsers } from "./notify.js";
 import { configDotenv } from "dotenv";
-import { start } from "./botInfo.js";
+// import { start } from "./botInfo.js";
 import connect from "../main/connect.js";
 
-import { getMarks, getSeasonButtons } from "../handlers/gradeAndMarks.js";
-import { statusHandler } from "../handlers/getFormattedResult.js";
-import { fetchResult } from "../api/fetchResult.js";
+// import { getMarks, getSeasonButtons } from "../handlers/gradeAndMarks.js";
+// import { statusHandler } from "../handlers/getFormattedResult.js";
+// import { fetchResult } from "../api/fetchResult.js";
 
 
 configDotenv();
@@ -17,6 +17,7 @@ await connect(process.env.MONGODB_URI);
 bot.use(async (ctx, next) => {
   try {
     console.log("Update handled");
+    ctx.reply("⏳ Processing your request...");
     await next();
   } catch (err) {
     console.error("Bot error:", err);
@@ -25,7 +26,7 @@ bot.use(async (ctx, next) => {
   }
 });
 // Track bot added/removed in groups
-bot.on("my_chat_member", insertGroupData);
+// bot.on("my_chat_member", insertGroupData);
 
 // bot.command("start", start);
 // bot.command("help", start);

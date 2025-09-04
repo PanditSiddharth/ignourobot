@@ -36,7 +36,6 @@ bot.command("me", async (ctx) => {
     return ctx.reply("ℹ️ You have not linked any enrollment yet. Use /marks command.");
   }
 
-  console.log(await user)
   if(isPrivate)
   await ctx.reply(
     `👤 Your Info:\n\n`  +
@@ -44,7 +43,7 @@ bot.command("me", async (ctx) => {
     `Name: ${ctx.from.first_name} ${ctx.from.last_name || ""}\n` +
     `Username: ${ctx.from.username ?"@" + ctx.from.username : ""}\n` +
     `Enrollments you searched: ` +
-    user.seenEnrollments.map(u => (`
+    user.seenEnrollments?.map(u => (`
       Enrollment: ${u.enrollmentNo}
       Name: ${u.gradeCardName}
       Programme Code: ${u.programmeCode}

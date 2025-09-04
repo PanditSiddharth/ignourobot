@@ -4,7 +4,6 @@ import axios from 'axios';
 import { Telegraf } from 'telegraf';
 import https from 'https';
 import { fileHandle } from "./handleFile"
-const { fetchGradeCard } = require("./fetchGradeCard")
 import { formatDate, getStatusData } from "./status"
 import { getFormattedGrade, getMarksCard } from "./helpers"
 

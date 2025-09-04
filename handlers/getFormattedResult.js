@@ -106,7 +106,7 @@ Asm  Exm  Lbm  Marks       Sub   `
     gradeCard += "```"
     console.log(total)
     gradeCard += "\n\n>Result\\: " + "Got " + total.got + " in " + total.in
-    gradeCard += "\n>Your Percentage\\: " + Math.round((+total.got / +total.in * 100) * 100) / 100 + " %"
+    gradeCard += "\n>Your Percentage\\: " + (Math.round((+total.got / +total.in * 100) * 100) / 100).toString().replace(".", "\\.") + " %"
     gradeCard += "\n>More details: [Click Here](https://telegra.ph/Details-of-that-grade-card-result-08-17)"
 
     return gradeCard;

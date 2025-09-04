@@ -49,7 +49,7 @@ export async function insertUserData(ctx, payload) {
 
   // Example reply
   let reply =await ctx.reply(
-    `✅ Linked ENR ${payload.enrollmentNo}. You now have ${user.seenEnrollments.length} enrollment(s).`
+    `✅ Saved in your list. You now have ${user.seenEnrollments.length} enrollment(s).`
   );
 
   sleep(5000).then(() => ctx.deleteMessage(reply.message_id).catch(console.log));

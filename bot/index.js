@@ -44,12 +44,12 @@ bot.command("me", async (ctx) => {
     `Name: ${ctx.from.first_name} ${ctx.from.last_name || ""}\n` +
     `Username: ${ctx.from.username ?"@" + ctx.from.username : ""}\n` +
     `Enrollments you searched: ` +
-    user.seenEnrollments.map(u => `
+    user.seenEnrollments.map(u => (`
       Enrollment: ${u.enrollmentNo}
       Name: ${u.gradeCardName}
       Programme Code: ${u.programmeCode}
-      `)
-  );
+      `))
+  )
 });
 
 bot.action("close", async (ctx) => {

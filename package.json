@@ -15,9 +15,9 @@
   },
   "scripts": {
     "start": "node api/index.js",
-    "dev": "nodemon --exec \"node --experimental-specifier-resolution=node\" api/index.js"
+    "dev": "nodemon --exec \"node --experimental-specifier-resolution=node\" index.js"
   },
-  
+
   "keywords": [],
   "author": "https://t.me/panditsiddharth",
   "license": "ISC",

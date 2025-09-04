@@ -7,7 +7,7 @@ in bellow formate
 */
 
 
-let courses = {
+export let courses = {
     // BCA
     BCS011: { mm: 100, aw: 25 },
     BCS012: { mm: 100, aw: 25 },
@@ -150,4 +150,4 @@ let courses = {
   BZYCL132: { mm: 25, aw: 30 },
 };
 
-export default { courses }
+

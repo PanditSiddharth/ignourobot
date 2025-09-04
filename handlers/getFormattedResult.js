@@ -1,5 +1,5 @@
 import { getStatusData, formatDate } from "../api/status.js";
-import courses from "../courses.js";
+import {courses} from "../courses.js";
 
 function getfm(am) {
     if (['A', 'B', 'C', 'D', 'E', 'F'].includes(am))
@@ -21,7 +21,9 @@ function getfem(em, pm) {
 
 const calc = (am, em, sub) => {
     let res = { got: "0  ", in: "0  " }
+   
     let subb = courses[sub] ? courses[sub] : { aw: 30, mm: 100 }
+    
     res.in = subb.mm == 50 ? "50 " : subb.mm; // formatted 50
 
     let realAm = Math.round(am * subb.aw / 100 * (subb.mm/100))

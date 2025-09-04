@@ -13,7 +13,7 @@
     }
   ],
   "functions": {
-    "./**/*.js": {
+    "api/**/*.js": {
       "maxDuration": 30
     }
   }

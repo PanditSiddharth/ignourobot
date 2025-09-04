@@ -62,7 +62,7 @@ Asm  Exm  Lbm  Marks       Sub   `
         gradeCard += `\n${padRight(getfm(i.assignmentMarks), 5)}${padRight(getfem(i.examMarks, i.practicalMarks), 5)}${padRight(getfm(i.labMarks), 5)}${padRight(marksStr, 12)} ${i.subject}`
     }
     gradeCard += "```"
-    console.log(total)
+    
     gradeCard += "\n\n>Result\\: " + "Got " + total.got + " in " + total.in
     gradeCard += "\n>Your Percentage\\: " + (Math.round((+total.got / +total.in * 100) * 100) / 100).toString().replace(".", "\\.") + " %"
     gradeCard += "\n>More details: [Click Here](https://telegra.ph/Details-of-that-grade-card-result-08-17)"

@@ -2,7 +2,7 @@
   "name": "ignouresult",
   "version": "1.0.0",
   "description": "IGNOU Result Bot",
-  "main": "api/index.js",
+  "main": "index.js",
   "type": "module",
   "dependencies": {
     "axios": "^1.6.7",
@@ -14,7 +14,7 @@
     "telegraf": "^4.15.3"
   },
   "scripts": {
-    "start": "node api/index.js",
+    "start": "node index.js",
     "dev": "nodemon --exec \"node --experimental-specifier-resolution=node\" index.js"
   },
 

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+ 
 // 🔹 Group snapshot for an enrollment's origin
 const SourceGroupSchema = new mongoose.Schema({
   groupId: { type: String, required: true },

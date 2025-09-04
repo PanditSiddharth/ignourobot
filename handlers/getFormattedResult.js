@@ -101,7 +101,7 @@ Asm  Exm  Lbm  Marks       Sub   `
         total.got += +i.got;
         total.in += +i.in;
         let marksStr = (i.got == 0 ? "0" : Math.round(i.got)) + " in " + i.in;
-        gradeCard += `\n${padRight(getfm(i.assignmentMarks), 5)}${padRight(getfem(i.examMarks, i.practicalMarks), 5)}${padRight(getfm(i.labMarks), 5)}${padRight(marksStr, 11)} ${i.subject}`
+        gradeCard += `\n${padRight(getfm(i.assignmentMarks), 5)}${padRight(getfem(i.examMarks, i.practicalMarks), 5)}${padRight(getfm(i.labMarks), 5)}${padRight(marksStr, 12)} ${i.subject}`
     }
     gradeCard += "```"
     console.log(total)

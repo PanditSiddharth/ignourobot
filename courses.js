@@ -148,6 +148,18 @@ export let courses = {
 
   BZYCT131: { mm: 50, aw: 30 },
   BZYCL132: { mm: 25, aw: 30 },
+
+
+// MPA 
+  MPA11: { mm: 100, aw: 30 },
+  MPA12: { mm: 100, aw: 30 },
+  MPA13: { mm: 100, aw: 30 },
+  MPA14: { mm: 100, aw: 30 },
+  MPA15: { mm: 100, aw: 30 },
+  MPA16: { mm: 100, aw: 30 },
+  MPA17: { mm: 50, aw: 30 },
+  MPA18: { mm: 50, aw: 30 },
+  MPS03: { mm: 100, aw: 30 }
 };
 
 

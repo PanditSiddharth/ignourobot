@@ -81,7 +81,9 @@ let courses = {
 
 
     // BSCBCH
-  // Core Theory & Labs
+    // Core Theory & Labs
+  BAPI002: { mm: 50, aw: 30 },
+  ONR002: { mm: 50, aw: 30 },
   BBCCT101: { mm: 50, aw: 30 },
   BBCCL102: { mm: 25, aw: 30 },
   BBCCT103: { mm: 50, aw: 30 },
@@ -101,6 +103,10 @@ let courses = {
   BBCCT117: { mm: 50, aw: 30 },
   BBCCL118: { mm: 25, aw: 30 },
   BBCCT119: { mm: 50, aw: 30 },
+  BBCCT121: { mm: 50, aw: 30 },
+  BBCCT123: { mm: 50, aw: 30 },
+  BBCCT125: { mm: 50, aw: 30 },
+  BBCCT127: { mm: 50, aw: 30 },
   BBCCL120: { mm: 25, aw: 30 },
   BBCC121: { mm: 50, aw: 30 },
   BBCCL122: { mm: 25, aw: 30 },
@@ -133,7 +139,7 @@ let courses = {
   BCHCT131: { mm: 50, aw: 30 },
   BCHCT133: { mm: 25, aw: 30 },
   BCHCL132: { mm: 25, aw: 30 },
-    BCHCL134: { mm: 25, aw: 30 },
+  BCHCL134: { mm: 25, aw: 30 },
   BCHET147: { mm: 50, aw: 30 },
   BCHEL148: { mm: 25, aw: 30 },
 

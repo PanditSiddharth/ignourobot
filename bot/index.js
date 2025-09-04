@@ -14,7 +14,16 @@ configDotenv();
 export const runBot = async (bot) => {
 // DB connect
 await connect(process.env.MONGODB_URI);
-
+bot.use(async (ctx, next) => {
+  try {
+    console.log("Update handled");
+    await next();
+  } catch (err) {
+    console.error("Bot error:", err);
+    if (ctx.reply)
+      await ctx.reply("⚠️ An error occurred. Please try again later.");
+  }
+});
 // Track bot added/removed in groups
 bot.on("my_chat_member", insertGroupData);
 

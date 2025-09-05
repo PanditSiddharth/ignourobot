@@ -56,8 +56,7 @@ bot.command("me", async (ctx) => {
     user.seenEnrollments?.map(u => (`
 Enrollment: ${u.enrollmentNo}
 Name: ${u.gradeCardName}
-Programme Code: ${u.programmeCode}
-`)).join("\n")
+Programme Code: ${u.programmeCode}`)).join("\n")
   )
 });
 

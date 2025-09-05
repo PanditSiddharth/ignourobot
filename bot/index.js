@@ -41,7 +41,7 @@ bot.action(/\{\"eno/, async (ctx) => {
 bot.command("me", async (ctx) => {
   const isPrivate = ctx.chat?.type === "private";
 
-  const user = findUserById(String(ctx.from.id))
+  const user = await findUserById(String(ctx.from.id))
   if (!user) {
     return ctx.reply("ℹ️ You have not linked any enrollment yet. Use /marks command.");
   }

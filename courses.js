@@ -159,7 +159,59 @@ export let courses = {
   MPA16: { mm: 100, aw: 30 },
   MPA17: { mm: 50, aw: 30 },
   MPA18: { mm: 50, aw: 30 },
-  MPS03: { mm: 100, aw: 30 }
+  MPS03: { mm: 100, aw: 30 },
+
+    // BBY
+  BBYCL132: { mm: 25, aw: 30 },
+  BBYCL134: { mm: 25, aw: 30 },
+  BBYCL136: { mm: 25, aw: 30 },
+  BBYCL138: { mm: 25, aw: 30 },
+  BBYCT131: { mm: 50, aw: 30 },
+  BBYCT133: { mm: 50, aw: 30 },
+  BBYCT135: { mm: 50, aw: 30 },
+  BBYCT137: { mm: 50, aw: 30 },
+  BBYEL142: { mm: 100, aw: 30 },
+  BBYEL144: { mm: 100, aw: 30 },
+  BBYET141: { mm: 100, aw: 30 },
+  BBYET143: { mm: 100, aw: 30 },
+
+  // BEG
+  BEGAE182: { mm: 100, aw: 30 },
+  BEGS183: { mm: 100, aw: 30 },
+  BEGS185: { mm: 100, aw: 30 },
+  BEVAE181: { mm: 100, aw: 30 },
+
+  // BGY
+  BGYCL132: { mm: 100, aw: 30 },
+  BGYCL134: { mm: 100, aw: 30 },
+  BGYCL136: { mm: 100, aw: 30 },
+  BGYCL138: { mm: 100, aw: 30 },
+  BGYCT131: { mm: 100, aw: 30 },
+  BGYCT133: { mm: 100, aw: 30 },
+  BGYCT135: { mm: 100, aw: 30 },
+  BGYCT137: { mm: 100, aw: 30 },
+  BGYEL142: { mm: 100, aw: 30 },
+  BGYEL148: { mm: 100, aw: 30 },
+  BGYET141: { mm: 100, aw: 30 },
+  BGYET147: { mm: 100, aw: 30 },
+
+  // BPCS
+  BPCS184: { mm: 100, aw: 30 },
+  BPCS188: { mm: 100, aw: 30 },
+
+  // BZY
+  BZYCL132: { mm: 25, aw: 30 },
+  BZYCL134: { mm: 25, aw: 30 },
+  BZYCL136: { mm: 25, aw: 30 },
+  BZYCL138: { mm: 25, aw: 30 },
+  BZYCT131: { mm: 50, aw: 30 },
+  BZYCT133: { mm: 50, aw: 30 },
+  BZYCT135: { mm: 50, aw: 30 },
+  BZYCT137: { mm: 50, aw: 30 },
+  BZYEL142: { mm: 100, aw: 30 },
+  BZYEL144: { mm: 100, aw: 30 },
+  BZYET141: { mm: 100, aw: 30 },
+  BZYET143: { mm: 100, aw: 30 },
 };
 
 

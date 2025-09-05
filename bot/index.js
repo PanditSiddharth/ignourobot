@@ -52,12 +52,12 @@ bot.command("me", async (ctx) => {
     `ID: ${ctx.from.id}\n` +
     `Name: ${ctx.from.first_name} ${ctx.from.last_name || ""}\n` +
     `Username: ${ctx.from.username ?"@" + ctx.from.username : ""}\n` +
-    `Enrollments you searched: ` +
+    `Enrollments you searched: \n` +
     user.seenEnrollments?.map(u => (`
 Enrollment: ${u.enrollmentNo}
 Name: ${u.gradeCardName}
 Programme Code: ${u.programmeCode}
-`))
+`)).join("\n")
   )
 });
 

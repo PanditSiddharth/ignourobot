@@ -54,10 +54,10 @@ bot.command("me", async (ctx) => {
     `Username: ${ctx.from.username ?"@" + ctx.from.username : ""}\n` +
     `Enrollments you searched: ` +
     user.seenEnrollments?.map(u => (`
-      Enrollment: ${u.enrollmentNo}
-      Name: ${u.gradeCardName}
-      Programme Code: ${u.programmeCode}
-      `))
+Enrollment: ${u.enrollmentNo}
+Name: ${u.gradeCardName}
+Programme Code: ${u.programmeCode}
+`))
   )
 });
 
